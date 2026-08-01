@@ -14,6 +14,14 @@
   --color-mustard: #e4b363;
   --color-line: rgba(60, 42, 33, 0.14);
   --color-line-strong: rgba(60, 42, 33, 0.28);
+  --color-header-bg: rgba(250, 243, 231, 0.88);
+
+  /* The footer is a fixed dark band in both themes, so it uses its own
+     tokens rather than the ones above, which flip for dark mode. */
+  --color-footer-bg: #2b1d15;
+  --color-footer-text: #faf3e7;
+  --color-footer-muted: rgba(250, 243, 231, 0.65);
+  --color-footer-line: rgba(250, 243, 231, 0.16);
 
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -23,6 +31,26 @@
   --radius-sm: 4px;
   --radius-md: 10px;
   --section-padding: clamp(3.5rem, 6vw, 6rem);
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #201712;
+  --color-bg-alt: #2a1e16;
+  --color-surface: #2c2018;
+  --color-ink: #f3e9db;
+  --color-ink-soft: #cbb9a8;
+  --color-orange: #e2874f;
+  --color-orange-dark: #f2a06c;
+  --color-teal: #5fa593;
+  --color-teal-dark: #7cc4b1;
+  --color-mustard: #eac07a;
+  --color-line: rgba(243, 233, 219, 0.14);
+  --color-line-strong: rgba(243, 233, 219, 0.28);
+  --color-header-bg: rgba(32, 23, 18, 0.85);
+
+  color-scheme: dark;
 }
 
 /* ---------------------------------------------------------------- */
@@ -50,6 +78,7 @@ body {
   font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 h1,
@@ -165,9 +194,10 @@ svg {
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: rgba(250, 243, 231, 0.88);
+  background-color: var(--color-header-bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-line);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .site-header__inner {
@@ -223,6 +253,38 @@ svg {
   display: none;
 }
 
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-line-strong);
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-orange);
+  color: var(--color-orange-dark);
+  transform: translateY(-1px);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
 /* ---------------------------------------------------------------- */
 /* Hero                                                               */
 /* ---------------------------------------------------------------- */
@@ -240,27 +302,61 @@ svg {
   padding: 0 1.75rem;
 }
 
-.hero__sunburst {
-  position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 260px;
-  height: 260px;
-  color: var(--color-mustard);
-  opacity: 0.55;
-  z-index: 0;
+.hero__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 2.75rem;
+  margin-bottom: 3.25rem;
 }
 
-.hero__arc {
+.hero__portrait {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.hero__portrait-burst {
   position: absolute;
-  bottom: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 640px;
-  max-width: 140%;
-  color: var(--color-teal);
-  opacity: 0.18;
+  width: 150%;
+  height: 150%;
+  color: var(--color-mustard);
+  opacity: 0.6;
   z-index: 0;
+  transition: color 0.2s ease;
+}
+
+.hero__portrait-frame {
+  position: relative;
+  z-index: 1;
+  width: clamp(180px, 22vw, 260px);
+  height: clamp(180px, 22vw, 260px);
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--color-surface);
+  border: 6px solid var(--color-bg);
+  box-shadow: 0 0 0 2px var(--color-line-strong);
+}
+
+.hero__portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__portrait-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  font-weight: 600;
+  color: var(--color-teal-dark);
+  background-color: var(--color-bg-alt);
 }
 
 .hero__name {
@@ -291,7 +387,6 @@ svg {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 3.5rem;
 }
 
 .hero__stats {
@@ -315,6 +410,24 @@ svg {
   font-size: 0.8rem;
   color: var(--color-ink-soft);
   letter-spacing: 0.02em;
+}
+
+@media (min-width: 860px) {
+  .hero__top {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+
+  /* Portrait comes first in markup (so it leads on mobile, above the
+     eyebrow), but sits to the right of the text on wider screens. */
+  .hero__text {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .hero__portrait {
+    grid-column: 2;
+    grid-row: 1;
+  }
 }
 
 /* ---------------------------------------------------------------- */
@@ -525,8 +638,8 @@ svg {
 /* Footer                                                             */
 /* ---------------------------------------------------------------- */
 .site-footer {
-  background-color: var(--color-ink);
-  color: var(--color-bg);
+  background-color: var(--color-footer-bg);
+  color: var(--color-footer-text);
   padding: 3rem 0 2rem;
 }
 
@@ -537,7 +650,7 @@ svg {
   gap: 2rem;
   padding-bottom: 2rem;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(250, 243, 231, 0.16);
+  border-bottom: 1px solid var(--color-footer-line);
 }
 
 .site-footer__name {
@@ -546,7 +659,7 @@ svg {
 }
 
 .site-footer__title {
-  color: rgba(250, 243, 231, 0.65);
+  color: var(--color-footer-muted);
   font-size: 0.9rem;
   margin-top: 0.3rem;
 }
@@ -563,7 +676,7 @@ svg {
 }
 
 .site-footer__links a:hover {
-  color: var(--color-bg);
+  color: var(--color-footer-text);
 }
 
 .site-footer__copyright {
@@ -571,7 +684,7 @@ svg {
   margin: 0 auto;
   padding: 0 1.75rem;
   font-size: 0.8rem;
-  color: rgba(250, 243, 231, 0.55);
+  color: var(--color-footer-muted);
 }
 
 /* ---------------------------------------------------------------- */

@@ -1,23 +1,5 @@
 // Small, reusable mid-century-modern accent shapes. Purely decorative.
 
-export function Arc({ className }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 200 100"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M0 100 A 100 100 0 0 1 200 100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="18"
-      />
-    </svg>
-  )
-}
-
 export function Sunburst({ className }) {
   const rays = Array.from({ length: 12 })
   return (

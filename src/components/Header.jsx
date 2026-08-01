@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { profile } from '../data/cv.js'
+import ThemeToggle from './ThemeToggle.jsx'
 
-function Header({ sections }) {
+function Header({ sections, theme, onToggleTheme }) {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -25,16 +26,20 @@ function Header({ sections }) {
           ))}
         </nav>
 
-        <button
-          className="site-header__toggle"
-          aria-expanded={open}
-          aria-label="Toggle navigation menu"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        <div className="site-header__actions">
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+
+          <button
+            className="site-header__toggle"
+            aria-expanded={open}
+            aria-label="Toggle navigation menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
 
       <nav

@@ -6,6 +6,7 @@ import Leadership from './components/Leadership.jsx'
 import Skills from './components/Skills.jsx'
 import Education from './components/Education.jsx'
 import Footer from './components/Footer.jsx'
+import { useTheme } from './hooks/useTheme.js'
 
 const sections = [
   { id: 'about', label: 'About' },
@@ -16,9 +17,11 @@ const sections = [
 ]
 
 function App() {
+  const { theme, toggleTheme } = useTheme()
+
   return (
     <>
-      <Header sections={sections} />
+      <Header sections={sections} theme={theme} onToggleTheme={toggleTheme} />
       <main>
         <Hero />
         <About />
