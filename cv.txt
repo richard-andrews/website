@@ -5,20 +5,20 @@ TECHNICAL EXPERIENCE
 • Hewlett Packard Enterprise Jul 2021 - Present
 Cloud Engineer II Bristol, UK
 HPE Greenlake Cloud Microservices
-◦ Serve as sole engineering owner and primary point of contact for HPE\'s cloud tunnel microservice - a
+◦ Serve as sole engineering owner and primary point of contact for HPE's cloud tunnel microservice - a
 GoLang-based service responsible for connecting approximately 30,000 customer-owned HPE storage
 devices to HPE GreenLake cloud across four AWS production clusters. Independently manage the full
 lifecycle of the service including feature development, dependency maintenance, security compliance,
 and production support, sharing architectural decisions and designs with the wider team.
-◦ Architect and maintain the tunnel service\'s communication interfaces, employing mTLS-secured REST
+◦ Architect and maintain the tunnel service's communication interfaces, employing mTLS-secured REST
 for connections leaving the HPE GreenLake cluster boundary and gRPC for inter-service communication.
 Internal messaging between the tunnel and other cluster services is handled via Apache Kafka and NATS,
 with intra-cluster traffic secured by mutual TLS enforced through the Istio service mesh.
-◦ Led the end-to-end migration of the tunnel service\'s CI/CD pipeline from a self-hosted GitHub instance
+◦ Led the end-to-end migration of the tunnel service's CI/CD pipeline from a self-hosted GitHub instance
 with Jenkins to publicly hosted GitHub with GitHub Actions, coordinating with an internal DevOps team
-to address the additional complexity introduced by the service\'s cross-cluster reach into customer
+to address the additional complexity introduced by the service's cross-cluster reach into customer
 environments.
-◦ Designed and implemented a scalability-driven rework of the service\'s public key publishing mechanism,
+◦ Designed and implemented a scalability-driven rework of the service's public key publishing mechanism,
 identifying that the original design stored keys in Redis - a solution that was both unnecessarily costly
 and architecturally misaligned with the access patterns required. Migrated key storage to PostgreSQL,
 improving both cost efficiency and long-term scalability.
@@ -45,16 +45,16 @@ data lakes.
 processed Trino data to downstream consumers, delivering a queryable interface for the LLM layer of the
 tool.
 HPE StoreOnce Secondary Storage Array
-◦ Contributed to HPE\'s StoreOnce enterprise secondary storage array - an appliance used by
+◦ Contributed to HPE's StoreOnce enterprise secondary storage array - an appliance used by
 organisations for data backup, cost optimisation, and regulatory compliance. Implemented the tunnel
 device library within StoreOnce to enable devices to establish secure connections to HPE GreenLake
 cloud, extending the reach of the cloud connectivity ecosystem to this platform.
-◦ Developed storage capacity monitoring and overflow alerting functionality within StoreOnce\'s REST
+◦ Developed storage capacity monitoring and overflow alerting functionality within StoreOnce's REST
 server, giving customers visibility into their storage utilisation and enabling proactive intervention before
 capacity thresholds are breached.
 LEADERSHIP EXPERIENCE
 • Intern Lead Jul 2024 - Present
-◦ Serve as the primary point of contact and pastoral lead for HPE\'s Bristol office intern cohort of
+◦ Serve as the primary point of contact and pastoral lead for HPE's Bristol office intern cohort of
 approximately 10 industrial placement students per year, each undertaking 13-month sandwich
 placements as part of their undergraduate studies in software engineering and computer science. Now in
 a second year of the role having successfully seen one full cohort through their placement, bringing
@@ -72,7 +72,7 @@ mediating interpersonal conflict where required.
 site social events, charity fundraising initiatives, and high-profile opportunities such as attendance at
 customer events and fireside chats with senior company leadership. Responsible for planning, logistics,
 and budget management across these activities, overseeing a four-figure budget.
-◦ Facilitate intern involvement in HPE\'s Employee Resource Groups (ERGs), including the STEM outreach
+◦ Facilitate intern involvement in HPE's Employee Resource Groups (ERGs), including the STEM outreach
 programme, where interns visit local schools to deliver computer science education. Coordinate intern
 attendance at structured professional development webinars and development days forming part of the
 formal placement programme.
@@ -80,9 +80,9 @@ formal placement programme.
 engineering position, demonstrating the ability to manage competing priorities, lead people, and operate
 effectively beyond the boundaries of a purely technical remit.
 • Pride RG Lead Jul 2023 - Jul 2026
-◦ Served as HPE Bristol\'s Pride ERG Lead and Site Ambassador for three years, organising LGBTQ+
-awareness events, managing a site budget, and leading the Bristol office\'s participation in Bristol Pride on
-two occasions - the first time in the parade\'s 12-year history the site had attended.
+◦ Served as HPE Bristol's Pride ERG Lead and Site Ambassador for three years, organising LGBTQ+
+awareness events, managing a site budget, and leading the Bristol office's participation in Bristol Pride on
+two occasions - the first time in the parade's 12-year history the site had attended.
 • Charity Lead - Off the Record Bristol Nov 2023 - Oct 2024
 ◦ Nominated and led the HPE Bristol partnership with Off The Record (OTR) Bristol, a mental health
 charity supporting young people, raising over £26,000 through a self-organised programme of charity

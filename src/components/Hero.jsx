@@ -35,14 +35,17 @@ function Hero() {
     <section id="top" className="hero">
       <div className="hero__inner">
         <div className="hero__top">
-          <Portrait />
-
-          <div className="hero__text">
+          <div className="hero__text-top">
             <p className="eyebrow">{profile.location}</p>
             <h1 className="hero__name">{profile.name}</h1>
             <p className="hero__title">
-              {profile.title} <span className="hero__at">at</span> {profile.company}
+              {profile.title}
             </p>
+          </div>
+
+          <Portrait />
+
+          <div className="hero__text-bottom">
             <p className="hero__tagline">{profile.tagline}</p>
 
             <div className="hero__actions">

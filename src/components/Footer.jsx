@@ -23,7 +23,7 @@ function Footer() {
         </div>
       </div>
       <p className="site-footer__copyright">
-        © {year} {profile.name}. Built with React.
+        © {year} {profile.name}. Built with the assistance of AI.
       </p>
     </footer>
   )

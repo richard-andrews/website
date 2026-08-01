@@ -5,6 +5,7 @@ import Experience from './components/Experience.jsx'
 import Leadership from './components/Leadership.jsx'
 import Skills from './components/Skills.jsx'
 import Education from './components/Education.jsx'
+import Hobbies from './components/Hobbies.jsx'
 import Footer from './components/Footer.jsx'
 import { useTheme } from './hooks/useTheme.js'
 
@@ -14,6 +15,7 @@ const sections = [
   { id: 'leadership', label: 'Leadership' },
   { id: 'skills', label: 'Skills' },
   { id: 'education', label: 'Education' },
+  { id: 'hobbies', label: 'Hobbies' },
 ]
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
         <Leadership />
         <Skills />
         <Education />
+        <Hobbies />
       </main>
       <Footer />
     </>

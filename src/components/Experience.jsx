@@ -24,18 +24,7 @@ function Experience() {
             </div>
           </div>
 
-          <div className="experience__projects">
-            {experience.projects.map((project) => (
-              <article className="project-card" key={project.name}>
-                <h4>{project.name}</h4>
-                <ul>
-                  {project.highlights.map((h, i) => (
-                    <li key={i}>{h}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
+          <p className="experience__summary">{experience.summary}</p>
         </div>
       </div>
     </section>

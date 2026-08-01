@@ -7,17 +7,21 @@
   --color-surface: #fffdf8;
   --color-ink: #3c2a21;
   --color-ink-soft: #6b5a4d;
-  --color-orange: #d97742;
-  --color-orange-dark: #b85e2f;
+  --color-orange: #b54b1c;
+  --color-orange-dark: #8f3b16;
   --color-teal: #3f7c6b;
   --color-teal-dark: #2f5f52;
   --color-mustard: #e4b363;
   --color-line: rgba(60, 42, 33, 0.14);
   --color-line-strong: rgba(60, 42, 33, 0.28);
-  --color-header-bg: rgba(250, 243, 231, 0.88);
 
-  /* The footer is a fixed dark band in both themes, so it uses its own
-     tokens rather than the ones above, which flip for dark mode. */
+  /* The header and footer are fixed bands that keep their own colour in
+     both themes, rather than flipping with the ones above. */
+  --color-header-bg: rgba(38, 74, 64, 0.94);
+  --color-header-text: #faf3e7;
+  --color-header-text-soft: rgba(250, 243, 231, 0.7);
+  --color-header-hover: #e9c27a;
+
   --color-footer-bg: #2b1d15;
   --color-footer-text: #faf3e7;
   --color-footer-muted: rgba(250, 243, 231, 0.65);
@@ -41,14 +45,13 @@
   --color-surface: #2c2018;
   --color-ink: #f3e9db;
   --color-ink-soft: #cbb9a8;
-  --color-orange: #e2874f;
-  --color-orange-dark: #f2a06c;
+  --color-orange: #e08b42;
+  --color-orange-dark: #f2a662;
   --color-teal: #5fa593;
   --color-teal-dark: #7cc4b1;
   --color-mustard: #eac07a;
   --color-line: rgba(243, 233, 219, 0.14);
   --color-line-strong: rgba(243, 233, 219, 0.28);
-  --color-header-bg: rgba(32, 23, 18, 0.85);
 
   color-scheme: dark;
 }
@@ -195,9 +198,8 @@ svg {
   top: 0;
   z-index: 50;
   background-color: var(--color-header-bg);
+  color: var(--color-header-text);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--color-line);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .site-header__inner {
@@ -226,7 +228,7 @@ svg {
 }
 
 .site-header__nav--desktop a:hover {
-  color: var(--color-orange-dark);
+  color: var(--color-header-hover);
 }
 
 .site-header__toggle {
@@ -245,7 +247,7 @@ svg {
 .site-header__toggle span {
   display: block;
   height: 2px;
-  background-color: var(--color-ink);
+  background-color: var(--color-header-text);
   border-radius: 2px;
 }
 
@@ -283,6 +285,15 @@ svg {
 .theme-toggle svg {
   width: 18px;
   height: 18px;
+}
+
+.site-header .theme-toggle {
+  color: var(--color-header-text);
+}
+
+.site-header .theme-toggle:hover {
+  border-color: var(--color-header-hover);
+  color: var(--color-header-hover);
 }
 
 /* ---------------------------------------------------------------- */
@@ -368,7 +379,6 @@ svg {
   font-family: var(--font-display);
   font-size: clamp(1.15rem, 2.2vw, 1.5rem);
   color: var(--color-orange-dark);
-  margin-bottom: 1.4rem;
 }
 
 .hero__at {
@@ -391,9 +401,9 @@ svg {
 
 .hero__stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem;
-  max-width: 640px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 3rem;
+  max-width: 360px;
   margin: 0;
   padding-top: 2rem;
   border-top: 1px solid var(--color-line);
@@ -413,20 +423,29 @@ svg {
 }
 
 @media (min-width: 860px) {
+  /* On mobile the portrait sits between the title and tagline in normal
+     document flow. On wider screens it moves beside the full text
+     column instead, spanning both text blocks via named grid areas. */
   .hero__top {
     grid-template-columns: 1.15fr 0.85fr;
+    grid-template-areas: 'text-top   portrait'
+                          'text-bottom portrait';
+    row-gap: 0.5rem;
   }
 
-  /* Portrait comes first in markup (so it leads on mobile, above the
-     eyebrow), but sits to the right of the text on wider screens. */
-  .hero__text {
-    grid-column: 1;
-    grid-row: 1;
+  .hero__text-top {
+    grid-area: text-top;
+    align-self: end;
+  }
+
+  .hero__text-bottom {
+    grid-area: text-bottom;
+    align-self: start;
   }
 
   .hero__portrait {
-    grid-column: 2;
-    grid-row: 1;
+    grid-area: portrait;
+    align-self: center;
   }
 }
 
@@ -482,46 +501,10 @@ svg {
   line-height: 1.7;
 }
 
-.experience__projects {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.project-card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-line);
-  border-left: 3px solid var(--color-teal);
-  border-radius: var(--radius-md);
-  padding: 1.75rem 2rem;
-}
-
-.project-card h4 {
-  font-size: 1.1rem;
-  margin-bottom: 0.9rem;
-  color: var(--color-teal-dark);
-}
-
-.project-card ul {
-  display: grid;
-  gap: 0.65rem;
-}
-
-.project-card li {
-  position: relative;
-  padding-left: 1.1rem;
+.experience__summary {
+  max-width: 62ch;
+  font-size: 1.05rem;
   color: var(--color-ink-soft);
-  font-size: 0.97rem;
-}
-
-.project-card li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.55em;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background-color: var(--color-orange);
 }
 
 /* ---------------------------------------------------------------- */
@@ -635,6 +618,49 @@ svg {
 }
 
 /* ---------------------------------------------------------------- */
+/* Hobbies                                                            */
+/* ---------------------------------------------------------------- */
+.hobbies {
+  background-color: var(--color-bg-alt);
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.hobbies__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.hobbies__chips li {
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.92rem;
+  color: var(--color-ink);
+}
+
+.hobbies__chips li:nth-child(5n + 1) {
+  border-color: var(--color-orange);
+}
+
+.hobbies__chips li:nth-child(5n + 2) {
+  border-color: var(--color-teal);
+}
+
+.hobbies__chips li:nth-child(5n + 3) {
+  border-color: var(--color-mustard);
+}
+
+.hobbies__chips li:nth-child(5n + 4) {
+  border-color: var(--color-teal-dark);
+}
+
+.hobbies__chips li:nth-child(5n + 5) {
+  border-color: var(--color-orange-dark);
+}
+
+/* ---------------------------------------------------------------- */
 /* Footer                                                             */
 /* ---------------------------------------------------------------- */
 .site-footer {
@@ -711,6 +737,7 @@ svg {
     max-height: 0;
     overflow: hidden;
     background-color: var(--color-bg);
+    color: var(--color-ink);
     border-bottom: 1px solid transparent;
     transition: max-height 0.25s ease, padding 0.25s ease;
   }
