@@ -17,7 +17,7 @@
 
   /* The header and footer are fixed bands that keep their own colour in
      both themes, rather than flipping with the ones above. */
-  --color-header-bg: rgba(38, 74, 64, 0.94);
+  --color-header-bg: rgba(43, 29, 21, 0.94);
   --color-header-text: #faf3e7;
   --color-header-text-soft: rgba(250, 243, 231, 0.7);
   --color-header-hover: #e9c27a;

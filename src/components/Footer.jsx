@@ -9,7 +9,7 @@ function Footer() {
         <div>
           <p className="site-footer__name">{profile.name}</p>
           <p className="site-footer__title">
-            {profile.title} · {profile.company}
+            {profile.title} - {profile.location}
           </p>
         </div>
 
