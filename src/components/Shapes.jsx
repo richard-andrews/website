@@ -30,6 +30,22 @@ export function Sunburst({ className }) {
   )
 }
 
+export function Boomerang({ className }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 100 90"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        d="M50 10C20 10 5 35 10 55c4 17 20 30 40 25-10-10-12-25-2-35 10-10 27-7 34 5 13-10 13-25 3-33-7-5-17-7-25-7-4 0-7 0-10 0Z"
+      />
+    </svg>
+  )
+}
+
 export function Dot({ className }) {
   return (
     <svg className={className} viewBox="0 0 20 20" aria-hidden="true" focusable="false">

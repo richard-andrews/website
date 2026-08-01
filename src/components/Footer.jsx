@@ -1,4 +1,11 @@
 import { profile } from '../data/cv.js'
+import { GitHubIcon, LinkedInIcon, GlobeIcon, MailIcon } from './Icons.jsx'
+
+function iconForLink(label) {
+  if (label === 'GitHub') return GitHubIcon
+  if (label === 'LinkedIn') return LinkedInIcon
+  return GlobeIcon
+}
 
 function Footer() {
   const year = new Date().getFullYear()
@@ -14,12 +21,25 @@ function Footer() {
         </div>
 
         <div className="site-footer__links">
-          <a href={`mailto:${profile.email}`}>{profile.email}</a>
-          {profile.links.map((link) => (
-            <a key={link.label} href={link.href} target="_blank" rel="noreferrer">
-              {link.label}
-            </a>
-          ))}
+          <a className="site-footer__link" href={`mailto:${profile.email}`}>
+            <MailIcon className="site-footer__link-icon" />
+            {profile.email}
+          </a>
+          {profile.links.map((link) => {
+            const Icon = iconForLink(link.label)
+            return (
+              <a
+                className="site-footer__link"
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Icon className="site-footer__link-icon" />
+                {link.label}
+              </a>
+            )
+          })}
         </div>
       </div>
       <p className="site-footer__copyright">

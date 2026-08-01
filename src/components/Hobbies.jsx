@@ -1,5 +1,6 @@
 import { hobbies } from '../data/cv.js'
 import { Dot } from './Shapes.jsx'
+import Carousel from './Carousel.jsx'
 
 function Hobbies() {
   return (
@@ -10,11 +11,15 @@ function Hobbies() {
           Hobbies
         </h2>
 
-        <ul className="hobbies__chips">
-          {hobbies.map((hobby) => (
-            <li key={hobby}>{hobby}</li>
-          ))}
-        </ul>
+        <div className="hobbies__layout">
+          <ul className="hobbies__chips">
+            {hobbies.map((hobby) => (
+              <li key={hobby.label}>{hobby.label}</li>
+            ))}
+          </ul>
+
+          <Carousel slides={hobbies} />
+        </div>
       </div>
     </section>
   )

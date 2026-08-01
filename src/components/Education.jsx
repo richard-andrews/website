@@ -10,17 +10,21 @@ function Education() {
           Education
         </h2>
 
-        <div className="education__card">
-          <div>
-            <h3>{education.institution}</h3>
-            <p>{education.award}</p>
-          </div>
-          <div className="experience__meta">
-            <p>{education.location}</p>
-            <p>
-              {education.start} - {education.end}
-            </p>
-          </div>
+        <div className="education__list">
+          {education.map((entry) => (
+            <div className="education__card" key={entry.institution}>
+              <div>
+                <h3>{entry.institution}</h3>
+                <p>{entry.award}</p>
+              </div>
+              <div className="experience__meta">
+                <p>{entry.location}</p>
+                <p>
+                  {entry.start} - {entry.end}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

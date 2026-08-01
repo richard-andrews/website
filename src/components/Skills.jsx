@@ -1,9 +1,10 @@
 import { skills } from '../data/cv.js'
-import { Dot } from './Shapes.jsx'
+import { Dot, Boomerang } from './Shapes.jsx'
 
 function Skills() {
   return (
     <section id="skills" className="section skills">
+      <Boomerang className="skills__boomerang" />
       <div className="section__inner">
         <h2 className="section__heading">
           <Dot className="section__heading-dot" />

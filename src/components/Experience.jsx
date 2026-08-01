@@ -25,6 +25,12 @@ function Experience() {
           </div>
 
           <p className="experience__summary">{experience.summary}</p>
+
+          <ul className="experience__highlights">
+            {experience.highlights.map((h, i) => (
+              <li key={i}>{h}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
