@@ -3,7 +3,7 @@ import { profile, stats } from '../data/cv.js'
 import { Sunburst } from './Shapes.jsx'
 
 // To add your photo: drop an image at `public/profile.jpg` (any image
-// works as long as it's named profile.jpg — or update the src below to
+// works as long as it's named profile.jpg - or update the src below to
 // match your filename). It's picked up automatically; until then this
 // falls back to the initials placeholder.
 function Portrait() {
@@ -46,10 +46,10 @@ function Hero() {
             <p className="hero__tagline">{profile.tagline}</p>
 
             <div className="hero__actions">
-              <a className="button button--primary" href="#experience">
+              <a className="button button--ghost" href="#experience">
                 View experience
               </a>
-              <a className="button button--ghost" href={`mailto:${profile.email}`}>
+              <a className="button button--primary" href={`mailto:${profile.email}`}>
                 Get in touch
               </a>
             </div>

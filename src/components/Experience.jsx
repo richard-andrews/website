@@ -19,7 +19,7 @@ function Experience() {
             <div className="experience__meta">
               <p>{experience.location}</p>
               <p>
-                {experience.start} — {experience.end}
+                {experience.start} - {experience.end}
               </p>
             </div>
           </div>

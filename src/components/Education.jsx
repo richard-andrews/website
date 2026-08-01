@@ -18,7 +18,7 @@ function Education() {
           <div className="experience__meta">
             <p>{education.location}</p>
             <p>
-              {education.start} — {education.end}
+              {education.start} - {education.end}
             </p>
           </div>
         </div>
