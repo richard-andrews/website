@@ -1,38 +1,41 @@
 import { useState } from 'react'
-import { hobbyIcons } from './Icons.jsx'
+import { placeholderIcons, ImageIcon } from './Icons.jsx'
 
-// Falls back to a flat illustrated placeholder for a slide until a real
-// photo is added (see the note above the Carousel component below).
+// Falls back to a flat illustrated placeholder until a real photo is
+// added at the slide's `src` path (see the note in src/data/cv.js).
 function Slide({ slide }) {
   const [failed, setFailed] = useState(false)
-  const Icon = hobbyIcons[slide.icon]
+  const Icon = placeholderIcons[slide.icon] ?? ImageIcon
 
   if (failed) {
     return (
       <div className="carousel__placeholder" aria-hidden="true">
-        {Icon && <Icon className="carousel__placeholder-icon" />}
+        <Icon className="carousel__placeholder-icon" />
       </div>
     )
   }
 
   return (
     <img
-      src={slide.image}
-      alt={slide.label}
+      src={slide.src}
+      alt={slide.caption ?? ''}
       className="carousel__img"
       onError={() => setFailed(true)}
     />
   )
 }
 
-// To add real photos: drop images at `public/hobbies/<name>.jpg` matching
-// the `image` paths in `src/data/cv.js` (e.g. public/hobbies/running.jpg).
-// Any slide without a matching file falls back to a simple illustration.
+// A generic image carousel: it takes whatever slides it's given and
+// knows nothing about hobbies, so the photo set can grow, shrink or be
+// reordered independently of any other list on the page.
 function Carousel({ slides }) {
   const [index, setIndex] = useState(0)
   const count = slides.length
 
+  if (count === 0) return null
+
   const go = (delta) => setIndex((i) => (i + delta + count) % count)
+  const label = (slide, i) => slide.caption ?? `Photo ${i + 1}`
 
   return (
     <div className="carousel">
@@ -41,10 +44,10 @@ function Carousel({ slides }) {
           className="carousel__track"
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
-          {slides.map((slide) => (
-            <figure className="carousel__slide" key={slide.label}>
+          {slides.map((slide, i) => (
+            <figure className="carousel__slide" key={slide.src ?? i}>
               <Slide slide={slide} />
-              <figcaption>{slide.label}</figcaption>
+              {slide.caption && <figcaption>{slide.caption}</figcaption>}
             </figure>
           ))}
         </div>
@@ -60,10 +63,10 @@ function Carousel({ slides }) {
         <div className="carousel__dots">
           {slides.map((slide, i) => (
             <button
-              key={slide.label}
+              key={slide.src ?? i}
               type="button"
               className={`carousel__dot${i === index ? ' is-active' : ''}`}
-              aria-label={`Go to ${slide.label}`}
+              aria-label={`Go to ${label(slide, i)}`}
               aria-current={i === index}
               onClick={() => setIndex(i)}
             />

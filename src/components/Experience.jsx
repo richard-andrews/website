@@ -1,36 +1,44 @@
 import { experience } from '../data/cv.js'
 import { Dot } from './Shapes.jsx'
+import LavaBackground from './LavaBackground.jsx'
 
-function Experience() {
+function Experience({ lavaRunning }) {
   return (
     <section id="experience" className="section experience">
+      <LavaBackground running={lavaRunning} />
       <div className="section__inner">
         <h2 className="section__heading">
           <Dot className="section__heading-dot" />
           Experience
         </h2>
 
-        <div className="experience__role">
-          <div className="experience__role-header">
-            <div>
-              <h3>{experience.role}</h3>
-              <p className="experience__company">{experience.company}</p>
-            </div>
-            <div className="experience__meta">
-              <p>{experience.location}</p>
-              <p>
-                {experience.start} - {experience.end}
-              </p>
-            </div>
-          </div>
+        <div className="experience__roles">
+          {experience.map((role) => (
+            <article className="experience__role" key={`${role.company}-${role.role}`}>
+              <div className="experience__role-header">
+                <div>
+                  <h3>{role.role}</h3>
+                  <p className="experience__company">{role.company}</p>
+                </div>
+                <div className="experience__meta">
+                  <p>{role.location}</p>
+                  <p>
+                    {role.start} - {role.end}
+                  </p>
+                </div>
+              </div>
 
-          <p className="experience__summary">{experience.summary}</p>
+              {role.summary && <p className="experience__summary">{role.summary}</p>}
 
-          <ul className="experience__highlights">
-            {experience.highlights.map((h, i) => (
-              <li key={i}>{h}</li>
-            ))}
-          </ul>
+              {role.highlights?.length > 0 && (
+                <ul className="experience__highlights">
+                  {role.highlights.map((h, i) => (
+                    <li key={i}>{h}</li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          ))}
         </div>
       </div>
     </section>

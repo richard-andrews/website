@@ -15,13 +15,16 @@
   --color-line: rgba(60, 42, 33, 0.14);
   --color-line-strong: rgba(60, 42, 33, 0.28);
 
-  /* The header and footer are fixed bands that keep their own colour in
-     both themes, rather than flipping with the ones above. */
-  --color-header-bg: rgba(43, 29, 21, 0.94);
-  --color-header-text: #faf3e7;
-  --color-header-text-soft: rgba(250, 243, 231, 0.7);
-  --color-header-hover: #e9c27a;
+  /* The header tracks the hero's background (--color-bg-alt) so the two
+     read as one band at the top of the page, and flips with the theme.
+     Slightly translucent for the backdrop blur once content scrolls
+     under it. */
+  --color-header-bg: rgba(241, 230, 211, 0.92);
+  --color-header-text: var(--color-ink);
+  --color-header-text-soft: var(--color-ink-soft);
+  --color-header-hover: var(--color-orange-dark);
 
+  /* The footer stays a fixed dark band in both themes. */
   --color-footer-bg: #2b1d15;
   --color-footer-text: #faf3e7;
   --color-footer-muted: rgba(250, 243, 231, 0.65);
@@ -52,6 +55,8 @@
   --color-mustard: #eac07a;
   --color-line: rgba(243, 233, 219, 0.14);
   --color-line-strong: rgba(243, 233, 219, 0.28);
+
+  --color-header-bg: rgba(42, 30, 22, 0.92);
 
   color-scheme: dark;
 }
@@ -429,7 +434,7 @@ svg {
      document flow. On wider screens it moves beside the full text
      column instead, spanning both text blocks via named grid areas. */
   .hero__top {
-    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-columns: 1fr 0.9fr;
     grid-template-areas: 'text-top   portrait'
                           'text-bottom portrait';
     row-gap: 0.5rem;
@@ -449,11 +454,268 @@ svg {
     grid-area: portrait;
     align-self: center;
   }
+
+  /* Larger than the mobile default now that it has its own column
+     rather than sharing width with the text. */
+  .hero__portrait-frame {
+    width: clamp(260px, 24vw, 360px);
+    height: clamp(260px, 24vw, 360px);
+  }
+}
+
+/* Lava-lamp background: a handful of blurred, kidney-bean-shaped blobs
+   merged with an SVG goo filter so they melt into one another as they
+   drift, like the wax in a lava lamp. Contained to whichever section
+   renders it, paused by default, started with the button in the
+   header. Kept faint (low opacity) so it stays an ambient wash rather
+   than competing with text for contrast. Motion is deliberately slow
+   and large - a graceful drift rather than a jitter - with a small
+   drag effect against scroll so the blobs feel like they have weight. */
+.lava-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.lava-bg__blobs {
+  position: absolute;
+  inset: -20%;
+  /* The goo filter needs full-strength alpha to compute its merge
+     threshold correctly - fading the blobs themselves (rather than
+     this filtered container) washes everything out to nothing. Opacity
+     here is applied *after* the filter, to the merged result. */
+  filter: url(#lava-goo);
+  opacity: 0.4;
+}
+
+/* Fills the blobs container exactly; JS applies a small extra
+   translate here (a touch of wander, plus scroll drag) on top of the
+   blob's own CSS-animated drift, so the layers of motion compose. */
+.lava-bg__wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.lava-bg__blob {
+  position: absolute;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+
+.lava-bg.is-running .lava-bg__blob {
+  animation-play-state: running;
+}
+
+/* Three irregular, concave (kidney-bean-style) silhouettes, cycled
+   across the blobs below - a real notch rather than just an asymmetric
+   ellipse, so they read as organic rather than lumpy circles. */
+.lava-bg__blob--1,
+.lava-bg__blob--4,
+.lava-bg__blob--7 {
+  clip-path: polygon(
+    95.6% 50%, 85.3% 70.4%, 59.6% 66.6%, 50% 66.8%, 38% 70.8%, 16.7% 69.2%,
+    4.4% 50%, 12.6% 28.4%, 32% 18.8%, 50% 9.2%, 72.8% 10.5%, 89% 28.4%
+  );
+}
+
+.lava-bg__blob--2,
+.lava-bg__blob--5 {
+  clip-path: polygon(
+    74% 50%, 83.3% 69.2%, 72.8% 89.5%, 50% 93.2%, 32% 81.2%, 14.7% 70.4%,
+    4.4% 50%, 12.6% 28.4%, 27.2% 10.5%, 50% 9.2%, 59.6% 33.4%, 64.5% 41.6%
+  );
+}
+
+.lava-bg__blob--3,
+.lava-bg__blob--6 {
+  clip-path: polygon(
+    86% 50%, 85.3% 70.4%, 72.8% 89.5%, 50% 93.2%, 27.2% 89.5%, 14.7% 70.4%,
+    30.8% 50%, 35.5% 41.6%, 38% 29.2%, 50% 11.6%, 72.8% 10.5%, 87.4% 28.4%
+  );
+}
+
+.lava-bg__blob--1 {
+  width: 240px;
+  height: 240px;
+  left: 4%;
+  top: 55%;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-1;
+  animation-duration: 52s;
+}
+
+.lava-bg__blob--2 {
+  width: 190px;
+  height: 190px;
+  left: 22%;
+  top: 15%;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-2;
+  animation-duration: 61s;
+  animation-delay: -14s;
+}
+
+.lava-bg__blob--3 {
+  width: 280px;
+  height: 280px;
+  right: 4%;
+  top: 8%;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-3;
+  animation-duration: 70s;
+  animation-delay: -31s;
+}
+
+.lava-bg__blob--4 {
+  width: 170px;
+  height: 170px;
+  right: 18%;
+  bottom: 6%;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-4;
+  animation-duration: 47s;
+  animation-delay: -22s;
+}
+
+.lava-bg__blob--5 {
+  width: 220px;
+  height: 220px;
+  left: 38%;
+  top: 42%;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-5;
+  animation-duration: 58s;
+  animation-delay: -9s;
+}
+
+.lava-bg__blob--6 {
+  width: 160px;
+  height: 160px;
+  left: 8%;
+  top: 12%;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-6;
+  animation-duration: 65s;
+  animation-delay: -40s;
+}
+
+.lava-bg__blob--7 {
+  width: 200px;
+  height: 200px;
+  right: 30%;
+  bottom: 30%;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-7;
+  animation-duration: 55s;
+  animation-delay: -18s;
+}
+
+@keyframes lava-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(120px, -90px) scale(1.2) rotate(20deg); }
+  50% { transform: translate(60px, 60px) scale(0.9) rotate(-15deg); }
+  75% { transform: translate(-70px, 30px) scale(1.05) rotate(10deg); }
+}
+
+@keyframes lava-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  30% { transform: translate(-100px, 110px) scale(0.85) rotate(-25deg); }
+  60% { transform: translate(90px, 70px) scale(1.15) rotate(15deg); }
+  85% { transform: translate(50px, -60px) scale(0.95) rotate(-10deg); }
+}
+
+@keyframes lava-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  35% { transform: translate(-130px, 100px) scale(1.1) rotate(18deg); }
+  65% { transform: translate(-160px, -40px) scale(0.9) rotate(-20deg); }
+}
+
+@keyframes lava-drift-4 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  40% { transform: translate(-110px, -90px) scale(1.25) rotate(-18deg); }
+  75% { transform: translate(60px, -40px) scale(0.9) rotate(12deg); }
+}
+
+@keyframes lava-drift-5 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  30% { transform: translate(90px, 90px) scale(0.9) rotate(15deg); }
+  65% { transform: translate(-80px, -100px) scale(1.15) rotate(-20deg); }
+}
+
+@keyframes lava-drift-6 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  45% { transform: translate(100px, 130px) scale(1.1) rotate(22deg); }
+  80% { transform: translate(140px, 20px) scale(0.95) rotate(-8deg); }
+}
+
+@keyframes lava-drift-7 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  35% { transform: translate(-90px, -110px) scale(1.15) rotate(-16deg); }
+  70% { transform: translate(70px, -50px) scale(0.9) rotate(20deg); }
+}
+
+.lava-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-line-strong);
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.lava-toggle:hover {
+  border-color: var(--color-orange);
+  color: var(--color-orange-dark);
+  transform: translateY(-1px);
+}
+
+.lava-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.site-header .lava-toggle {
+  color: var(--color-header-text);
+}
+
+.site-header .lava-toggle:hover {
+  border-color: var(--color-header-hover);
+  color: var(--color-header-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lava-bg__blob {
+    animation: none !important;
+  }
 }
 
 /* ---------------------------------------------------------------- */
 /* Experience                                                        */
 /* ---------------------------------------------------------------- */
+.experience {
+  position: relative;
+  overflow: hidden;
+}
+
+.experience .section__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.experience__roles {
+  display: grid;
+  gap: 3.5rem;
+}
+
 .experience__role-header {
   display: flex;
   flex-wrap: wrap;
@@ -659,6 +921,16 @@ svg {
 /* ---------------------------------------------------------------- */
 /* Hobbies                                                            */
 /* ---------------------------------------------------------------- */
+.hobbies {
+  position: relative;
+  overflow: hidden;
+}
+
+.hobbies .section__inner {
+  position: relative;
+  z-index: 1;
+}
+
 .hobbies__layout {
   display: flex;
   flex-direction: column;
@@ -906,6 +1178,17 @@ svg {
 /* Responsive                                                         */
 /* ---------------------------------------------------------------- */
 @media (max-width: 760px) {
+  /* The blobs are sized for desktop section proportions and overwhelm
+     the stacked mobile layout, so the effect - and its toggle - are
+     desktop-only. */
+  .lava-bg {
+    display: none;
+  }
+
+  .site-header .lava-toggle {
+    display: none;
+  }
+
   .site-header__nav--desktop {
     display: none;
   }

@@ -16,6 +16,31 @@ CV made it onto the site; it's a condensed, web-friendly summary.
 All three are loaded from Google Fonts and easy to swap in `index.html` /
 `src/styles/index.css` if you want to try alternatives.
 
+## Content
+
+Everything the page renders comes from `src/data/cv.js`, and each section
+is data-driven - add or remove entries and the page follows:
+
+- `experience` - one entry per position
+- `education` - one entry per institution
+- `hobbies` - a plain list of labels
+- `gallery` - carousel photos, independent of `hobbies` (no 1:1 mapping)
+- `skills`, `leadership`, `stats`, `profile`
+
+Images: drop a photo at `public/profile.jpg` for the hero portrait, and
+at the `src` paths listed in `gallery` (e.g. `public/gallery/01.jpg`) for
+the carousel. Anything missing falls back to a placeholder.
+
+## Feature flags
+
+`src/config.js` holds flags for the more experimental bits:
+
+- `LAVA_LAMP_ENABLED` - the animated lava-lamp background behind the
+  Experience, Skills, and Hobbies sections. Set it to `true` to switch
+  the whole feature on (background + its play/pause button in the
+  header), or leave it `false` to keep the code around without it
+  showing at all.
+
 ## Development
 
 ```bash

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { profile } from '../data/cv.js'
 import ThemeToggle from './ThemeToggle.jsx'
+import LavaToggle from './LavaToggle.jsx'
 
-function Header({ sections, theme, onToggleTheme }) {
+function Header({ sections, theme, onToggleTheme, lavaRunning, onToggleLava }) {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -27,6 +28,7 @@ function Header({ sections, theme, onToggleTheme }) {
         </nav>
 
         <div className="site-header__actions">
+          <LavaToggle running={lavaRunning} onToggle={onToggleLava} />
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
 
           <button

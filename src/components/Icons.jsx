@@ -124,7 +124,26 @@ export function DiceIcon({ className }) {
   )
 }
 
-export const hobbyIcons = {
+export function ImageIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <circle cx="8.5" cy="10" r="1.6" fill="currentColor" />
+      <path
+        d="M4 17l4.5-5 3.5 3.5 3-2.5L20 17"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+// Glyphs available to carousel placeholders, keyed by the `icon` field
+// in a gallery entry. Unknown or missing keys fall back to ImageIcon.
+export const placeholderIcons = {
   running: RunningIcon,
   hiking: MountainIcon,
   photography: CameraIcon,

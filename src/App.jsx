@@ -6,7 +6,9 @@ import Skills from './components/Skills.jsx'
 import Education from './components/Education.jsx'
 import Hobbies from './components/Hobbies.jsx'
 import Footer from './components/Footer.jsx'
+import { LavaGooDefs } from './components/LavaBackground.jsx'
 import { useTheme } from './hooks/useTheme.js'
+import { useLavaMotion } from './hooks/useLavaMotion.js'
 
 const sections = [
   { id: 'experience', label: 'Experience' },
@@ -18,17 +20,25 @@ const sections = [
 
 function App() {
   const { theme, toggleTheme } = useTheme()
+  const { running: lavaRunning, toggle: toggleLava } = useLavaMotion()
 
   return (
     <>
-      <Header sections={sections} theme={theme} onToggleTheme={toggleTheme} />
+      <LavaGooDefs />
+      <Header
+        sections={sections}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        lavaRunning={lavaRunning}
+        onToggleLava={toggleLava}
+      />
       <main>
         <Hero />
-        <Experience />
+        <Experience lavaRunning={lavaRunning} />
         <Leadership />
-        <Skills />
+        <Skills lavaRunning={lavaRunning} />
         <Education />
-        <Hobbies />
+        <Hobbies lavaRunning={lavaRunning} />
       </main>
       <Footer />
     </>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="32" fill="#D97742"/>
-  <circle cx="32" cy="32" r="27" fill="#FAF3E7"/>
+  <circle cx="32" cy="32" r="32" fill="#2B1D15"/>
+  <circle cx="32" cy="32" r="27" fill="#B54B1C"/>
   <text
     x="32"
     y="33"
@@ -10,6 +10,6 @@
     letter-spacing="-1"
     text-anchor="middle"
     dominant-baseline="central"
-    fill="#3C2A21"
+    fill="#FAF3E7"
   >RA</text>
 </svg>
