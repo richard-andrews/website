@@ -23,7 +23,7 @@ export function LavaGooDefs() {
   )
 }
 
-const BLOB_COUNT = 400
+const BLOB_COUNT = 26
 
 // A single decorative background shared by the whole page (mounted
 // once in App.jsx, behind every section) rather than one instance per

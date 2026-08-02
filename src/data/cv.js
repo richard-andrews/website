@@ -4,10 +4,7 @@ export const profile = {
   company: 'Hewlett Packard Enterprise',
   location: 'Bristol, UK',
   email: 'richardxndrews@gmail.com',
-  tagline: `I'm a Bristol-based cloud engineer, building and owning the connectivity backbone linking
-thousands of enterprise storage devices to the cloud. I care about secure-by-design systems and
-pragmatic architecture - decisions that keep things reliable long after they ship. Outside of my day
-job, I lead an intern programme and a Pride employee network.`,
+  tagline: `I'm a Bristol-based cloud engineer, designing and building Go lang microservices that connect thousands of enterprise storage devices to the cloud. I care about secure-by-design systems and pragmatic architecture - decisions that keep things reliable long after they ship. On top of my day job, I lead an intern programme and a Pride employee network. Outside of work, I enjoy running, hiking, and board games.`,
   links: [
     { label: 'GitHub', href: 'https://github.com/richard-andrews' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/richard-andrews' },
@@ -30,17 +27,7 @@ export const experience = [
     location: 'Bristol, UK',
     start: 'Jul 2021',
     end: 'Present',
-    summary: `I joined HPE as a placement intern during my degree and came back full-time as a graduate
-engineer after finishing at Bath. Since then I've grown into a Cloud Engineer II role, owning a
-production Go microservice that connects tens of thousands of customer devices to HPE's GreenLake
-cloud platform.`,
-    highlights: [
-      "Sole engineering owner of the cloud tunnel microservice connecting ~30,000 customer storage devices to HPE GreenLake across four AWS production clusters - full lifecycle from features to security compliance and production support.",
-      "Architected the service's communication layer: mTLS-secured REST at the cluster boundary, gRPC and Kafka/NATS internally, all secured intra-cluster via Istio mutual TLS.",
-      "Led migration of the service's CI/CD pipeline from self-hosted Jenkins to GitHub Actions, coordinating across teams to handle its reach into customer environments.",
-      'Redesigned the public key publishing mechanism, moving storage from Redis to PostgreSQL for better cost efficiency and scalability.',
-      "Led FIPS compliance work across a server, a 200-service client library, and an embedded device library - replacing non-compliant cryptography while preserving backwards compatibility.",
-    ],
+    summary: `I joined HPE as a placement intern as part of my degree, remaining with HPE part-time during my final year and came back full-time as a graduate engineer after grautating from Bath. Since then I've grown into Cloud Engineer II role, owning a production Go microservice that connects tens of thousands of customer devices to HPE's GreenLake cloud platform.`,
   }
 ]
 
@@ -119,10 +106,6 @@ export const hobbies = [
   'Board Games',
 ]
 
-// Photos for the carousel, deliberately independent of the hobby list
-// above: there's no 1:1 mapping, so add as many or as few as you like
-// and they don't need to correspond to a particular hobby.
-//
 // To use real photos, drop images at the `src` paths below (e.g.
 // public/gallery/01.jpg). Any entry without a matching file falls back
 // to a flat placeholder - `icon` just picks which glyph that
