@@ -1,10 +1,11 @@
+import { Globe, Mail } from 'lucide-react'
+import { GitHubIcon, LinkedInIcon } from './Icons.jsx'
 import { profile } from '../data/cv.js'
-import { GitHubIcon, LinkedInIcon, GlobeIcon, MailIcon } from './Icons.jsx'
 
 function iconForLink(label) {
   if (label === 'GitHub') return GitHubIcon
   if (label === 'LinkedIn') return LinkedInIcon
-  return GlobeIcon
+  return Globe
 }
 
 function Footer() {
@@ -22,7 +23,7 @@ function Footer() {
 
         <div className="site-footer__links">
           <a className="site-footer__link" href={`mailto:${profile.email}`}>
-            <MailIcon className="site-footer__link-icon" />
+            <Mail className="site-footer__link-icon" />
             {profile.email}
           </a>
           {profile.links.map((link) => {

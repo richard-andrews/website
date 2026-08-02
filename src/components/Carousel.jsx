@@ -1,5 +1,15 @@
 import { useState } from 'react'
-import { placeholderIcons, ImageIcon } from './Icons.jsx'
+import { Camera, Dices, Footprints, Gamepad2, Image as ImageIcon, Mountain } from 'lucide-react'
+
+// Glyphs available to carousel placeholders, keyed by the `icon` field
+// in a gallery entry. Unknown or missing keys fall back to ImageIcon.
+const placeholderIcons = {
+  running: Footprints,
+  hiking: Mountain,
+  photography: Camera,
+  'video-games': Gamepad2,
+  'board-games': Dices,
+}
 
 // Falls back to a flat illustrated placeholder until a real photo is
 // added at the slide's `src` path (see the note in src/data/cv.js).
