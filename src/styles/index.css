@@ -1,0 +1,1584 @@
+/* ---------------------------------------------------------------- */
+/* Design tokens                                                     */
+/* ---------------------------------------------------------------- */
+:root {
+  --color-bg: #faf3e7;
+  --color-bg-alt: #f1e6d3;
+  --color-surface: #fffdf8;
+  --color-ink: #3c2a21;
+  --color-ink-soft: #57473b;
+  --color-orange: #b54b1c;
+  --color-orange-dark: #8f3b16;
+  --color-teal: #3f7c6b;
+  --color-teal-dark: #2f5f52;
+  --color-mustard: #e4b363;
+  --color-line: rgba(60, 42, 33, 0.14);
+  --color-line-strong: rgba(60, 42, 33, 0.28);
+
+  /* The header tracks the hero's background (--color-bg-alt) so the two
+     read as one band at the top of the page, and flips with the theme.
+     Slightly translucent for the backdrop blur once content scrolls
+     under it. */
+  --color-header-bg: rgba(241, 230, 211, 0.92);
+  --color-header-text: var(--color-ink);
+  --color-header-text-soft: var(--color-ink-soft);
+  --color-header-hover: var(--color-orange-dark);
+
+  /* The footer stays a fixed dark band in both themes. */
+  --color-footer-bg: #2b1d15;
+  --color-footer-text: #faf3e7;
+  --color-footer-muted: rgba(250, 243, 231, 0.65);
+  --color-footer-line: rgba(250, 243, 231, 0.16);
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, Menlo, monospace;
+
+  --container-width: 1080px;
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 22px;
+  --section-padding: clamp(3.5rem, 6vw, 6rem);
+  --header-height: 68px;
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #201712;
+  --color-bg-alt: #2a1e16;
+  --color-surface: #2c2018;
+  --color-ink: #f3e9db;
+  --color-ink-soft: #d8c8b8;
+  --color-orange: #e08b42;
+  --color-orange-dark: #f2a662;
+  --color-teal: #5fa593;
+  --color-teal-dark: #7cc4b1;
+  --color-mustard: #eac07a;
+  --color-line: rgba(243, 233, 219, 0.14);
+  --color-line-strong: rgba(243, 233, 219, 0.28);
+
+  --color-header-bg: rgba(42, 30, 22, 0.92);
+
+  color-scheme: dark;
+}
+
+/* ---------------------------------------------------------------- */
+/* Reset & base                                                      */
+/* ---------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  background-image: radial-gradient(
+      circle at 1px 1px,
+      var(--color-line) 1px,
+      transparent 0
+    );
+  background-size: 28px 28px;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  /* Jost runs light at 400, which struggles against the dot texture and
+     the lava blobs - 500 is the readable baseline here. */
+  font-weight: 500;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--color-ink);
+}
+
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---------------------------------------------------------------- */
+/* Shared layout                                                     */
+/* ---------------------------------------------------------------- */
+.section__inner,
+.site-header__inner,
+.site-footer__inner {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+}
+
+.section {
+  padding: var(--section-padding) 0;
+}
+
+.section__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  margin-bottom: 2.5rem;
+}
+
+.section__heading-dot {
+  width: 10px;
+  height: 10px;
+  color: var(--color-teal);
+  flex-shrink: 0;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: var(--color-teal-dark);
+  margin: 0 0 0.9rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.6rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: 1.5px solid transparent;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.button--primary {
+  background-color: var(--color-orange);
+  color: var(--color-surface);
+}
+
+.button--primary:hover {
+  background-color: var(--color-orange-dark);
+  transform: translateY(-1px);
+}
+
+.button--ghost {
+  border-color: var(--color-line-strong);
+  color: var(--color-ink);
+}
+
+.button--ghost:hover {
+  border-color: var(--color-teal);
+  color: var(--color-teal-dark);
+  transform: translateY(-1px);
+}
+
+/* ---------------------------------------------------------------- */
+/* Header                                                             */
+/* ---------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--color-header-bg);
+  color: var(--color-header-text);
+  backdrop-filter: blur(8px);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+
+.site-header__mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.9vw, 1.45rem);
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease;
+}
+
+.site-header__mark:hover {
+  color: var(--color-header-hover);
+}
+
+.site-header__nav--desktop {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.92rem;
+}
+
+.site-header__nav--desktop a {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.site-header__nav--desktop a:hover {
+  color: var(--color-header-hover);
+}
+
+.site-header__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.site-header__toggle span {
+  display: block;
+  height: 2px;
+  background-color: var(--color-header-text);
+  border-radius: 2px;
+}
+
+.site-header__nav--mobile {
+  display: none;
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-line-strong);
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-orange);
+  color: var(--color-orange-dark);
+  transform: translateY(-1px);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.site-header .theme-toggle {
+  color: var(--color-header-text);
+}
+
+.site-header .theme-toggle:hover {
+  border-color: var(--color-header-hover);
+  color: var(--color-header-hover);
+}
+
+/* ---------------------------------------------------------------- */
+/* Hero                                                               */
+/* ---------------------------------------------------------------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg-alt);
+  border-bottom: 1px solid var(--color-line);
+  padding: clamp(4rem, 9vw, 7rem) 0 clamp(3rem, 6vw, 5rem);
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 1.75rem;
+}
+
+.hero__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 2.75rem;
+  margin-bottom: 3.25rem;
+}
+
+.hero__portrait {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.hero__portrait-burst {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  color: var(--color-mustard);
+  opacity: 0.6;
+  z-index: 0;
+  transition: color 0.2s ease;
+}
+
+.hero__portrait-frame {
+  position: relative;
+  z-index: 1;
+  /* vw-based so it actually tracks the viewport on phones too - the
+     old floor sat above what 22vw ever reached at mobile widths, so it
+     was effectively a fixed size all the way down to the smallest
+     screens. */
+  width: clamp(150px, 42vw, 260px);
+  height: clamp(150px, 42vw, 260px);
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--color-surface);
+  border: 6px solid var(--color-bg-alt);
+  box-shadow: 0 0 0 2px var(--color-teal);
+}
+
+.hero__portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__portrait-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  font-weight: 600;
+  color: var(--color-teal-dark);
+  background-color: var(--color-bg-alt);
+}
+
+.hero__name {
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  margin-bottom: 0.6rem;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  color: var(--color-orange-dark);
+}
+
+.hero__at {
+  color: var(--color-ink-soft);
+  font-style: italic;
+}
+
+.hero__tagline {
+  max-width: 54ch;
+  font-size: 1.05rem;
+  color: var(--color-ink-soft);
+  margin-bottom: 2.2rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 3rem;
+  max-width: 360px;
+  margin: 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.hero__stat dt {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--color-teal-dark);
+}
+
+.hero__stat dd {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 860px) {
+  /* Fills the viewport below the sticky header, with the content
+     vertically centred in whatever space that leaves. */
+  .hero {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - var(--header-height));
+  }
+
+  /* On mobile the portrait sits between the title and tagline in normal
+     document flow. On wider screens it moves beside the full text
+     column instead, spanning both text blocks via named grid areas. */
+  .hero__top {
+    grid-template-columns: 1fr 0.9fr;
+    grid-template-areas: 'text-top   portrait'
+                          'text-bottom portrait';
+    row-gap: 0.5rem;
+  }
+
+  .hero__text-top {
+    grid-area: text-top;
+    align-self: end;
+  }
+
+  .hero__text-bottom {
+    grid-area: text-bottom;
+    align-self: start;
+  }
+
+  .hero__portrait {
+    grid-area: portrait;
+    align-self: center;
+  }
+
+  /* Larger than the mobile default now that it has its own column
+     rather than sharing width with the text. */
+  .hero__portrait-frame {
+    width: clamp(260px, 24vw, 360px);
+    height: clamp(260px, 24vw, 360px);
+  }
+}
+
+/* Lava-lamp background: blurred, kidney-bean-shaped blobs merged with
+   an SVG goo filter so they melt into one another as they drift, like
+   the wax in a lava lamp. One instance spans the whole page (see
+   `.main`, below) rather than being clipped to a single section, so a
+   blob can drift across a section boundary instead of stopping dead
+   at its edge - it only becomes visible wherever a section's own
+   background lets it show through. Runs by default, paused with the
+   button in the header. Kept faint (low opacity) so it stays an
+   ambient wash rather than competing with text for contrast. Motion
+   is deliberately slow and large - a graceful drift rather than a
+   jitter - with a small drag effect against scroll so the blobs feel
+   like they have weight. */
+.main {
+  position: relative;
+}
+
+.lava-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.lava-bg__blobs {
+  position: absolute;
+  /* A fixed margin rather than a percentage - percentage insets scale
+     with the shared canvas's full height, which would otherwise pull
+     the blobs' coordinate origin hundreds of pixels off from the top
+     of `.lava-bg` now that this spans the whole page instead of one
+     section. */
+  inset: -180px;
+  /* The goo filter needs full-strength alpha to compute its merge
+     threshold correctly - fading the blobs themselves (rather than
+     this filtered container) washes everything out to nothing. Opacity
+     here is applied *after* the filter, to the merged result. */
+  filter: url(#lava-goo);
+  opacity: 0.4;
+}
+
+/* Fills the blobs container exactly; JS applies a small extra
+   translate here (a touch of wander, plus scroll drag) on top of the
+   blob's own CSS-animated drift, so the layers of motion compose. */
+.lava-bg__wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.lava-bg__blob {
+  position: absolute;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+}
+
+.lava-bg.is-running .lava-bg__blob {
+  animation-play-state: running;
+}
+
+/* Three irregular, concave (kidney-bean-style) silhouettes, cycled
+   across the blobs below - a real notch rather than just an asymmetric
+   ellipse, so they read as organic rather than lumpy circles. */
+.lava-bg__blob--1,
+.lava-bg__blob--4,
+.lava-bg__blob--7,
+.lava-bg__blob--10,
+.lava-bg__blob--13,
+.lava-bg__blob--16,
+.lava-bg__blob--19,
+.lava-bg__blob--22,
+.lava-bg__blob--25 {
+  clip-path: polygon(
+    95.6% 50%, 85.3% 70.4%, 59.6% 66.6%, 50% 66.8%, 38% 70.8%, 16.7% 69.2%,
+    4.4% 50%, 12.6% 28.4%, 32% 18.8%, 50% 9.2%, 72.8% 10.5%, 89% 28.4%
+  );
+}
+
+.lava-bg__blob--2,
+.lava-bg__blob--5,
+.lava-bg__blob--8,
+.lava-bg__blob--11,
+.lava-bg__blob--14,
+.lava-bg__blob--17,
+.lava-bg__blob--20,
+.lava-bg__blob--23,
+.lava-bg__blob--26 {
+  clip-path: polygon(
+    74% 50%, 83.3% 69.2%, 72.8% 89.5%, 50% 93.2%, 32% 81.2%, 14.7% 70.4%,
+    4.4% 50%, 12.6% 28.4%, 27.2% 10.5%, 50% 9.2%, 59.6% 33.4%, 64.5% 41.6%
+  );
+}
+
+.lava-bg__blob--3,
+.lava-bg__blob--6,
+.lava-bg__blob--9,
+.lava-bg__blob--12,
+.lava-bg__blob--15,
+.lava-bg__blob--18,
+.lava-bg__blob--21,
+.lava-bg__blob--24 {
+  clip-path: polygon(
+    86% 50%, 85.3% 70.4%, 72.8% 89.5%, 50% 93.2%, 27.2% 89.5%, 14.7% 70.4%,
+    30.8% 50%, 35.5% 41.6%, 38% 29.2%, 50% 11.6%, 72.8% 10.5%, 87.4% 28.4%
+  );
+}
+
+/* Positioned in px down the shared canvas (rather than %) so the
+   spread stays even regardless of how tall the page ends up being -
+   percentages would bunch or thin out as content is added or removed. */
+/* Positioned in px down the shared canvas (rather than %) so the
+
+   spread stays even regardless of how tall the page ends up being -
+
+   percentages would bunch or thin out as content is added or removed. */
+
+.lava-bg__blob--1 {
+  width: 240px;
+  height: 240px;
+  left: 2%;
+  top: 210px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-1;
+  animation-duration: 52s;
+}
+
+.lava-bg__blob--2 {
+  width: 190px;
+  height: 190px;
+  right: 11%;
+  top: 365px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-2;
+  animation-duration: 61s;
+  animation-delay: -14s;
+}
+
+.lava-bg__blob--3 {
+  width: 280px;
+  height: 280px;
+  left: 16%;
+  top: 520px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-3;
+  animation-duration: 70s;
+  animation-delay: -31s;
+}
+
+.lava-bg__blob--4 {
+  width: 170px;
+  height: 170px;
+  right: 7%;
+  top: 675px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-4;
+  animation-duration: 47s;
+  animation-delay: -22s;
+}
+
+.lava-bg__blob--5 {
+  width: 220px;
+  height: 220px;
+  left: 2%;
+  top: 830px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-5;
+  animation-duration: 58s;
+  animation-delay: -9s;
+}
+
+.lava-bg__blob--6 {
+  width: 160px;
+  height: 160px;
+  right: 11%;
+  top: 985px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-6;
+  animation-duration: 65s;
+  animation-delay: -40s;
+}
+
+.lava-bg__blob--7 {
+  width: 200px;
+  height: 200px;
+  left: 16%;
+  top: 1140px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-7;
+  animation-duration: 55s;
+  animation-delay: -18s;
+}
+
+.lava-bg__blob--8 {
+  width: 250px;
+  height: 250px;
+  right: 7%;
+  top: 1295px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-1;
+  animation-duration: 55s;
+  animation-delay: -7s;
+}
+
+.lava-bg__blob--9 {
+  width: 180px;
+  height: 180px;
+  left: 2%;
+  top: 1450px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-2;
+  animation-duration: 64s;
+  animation-delay: -21s;
+}
+
+.lava-bg__blob--10 {
+  width: 260px;
+  height: 260px;
+  right: 11%;
+  top: 1605px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-3;
+  animation-duration: 73s;
+  animation-delay: -38s;
+}
+
+.lava-bg__blob--11 {
+  width: 175px;
+  height: 175px;
+  left: 16%;
+  top: 1760px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-4;
+  animation-duration: 50s;
+  animation-delay: -29s;
+}
+
+.lava-bg__blob--12 {
+  width: 230px;
+  height: 230px;
+  right: 7%;
+  top: 1915px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-5;
+  animation-duration: 61s;
+  animation-delay: -16s;
+}
+
+.lava-bg__blob--13 {
+  width: 165px;
+  height: 165px;
+  left: 2%;
+  top: 2070px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-6;
+  animation-duration: 68s;
+  animation-delay: -47s;
+}
+
+.lava-bg__blob--14 {
+  width: 210px;
+  height: 210px;
+  right: 11%;
+  top: 2225px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-7;
+  animation-duration: 58s;
+  animation-delay: -25s;
+}
+
+.lava-bg__blob--15 {
+  width: 245px;
+  height: 245px;
+  left: 16%;
+  top: 2380px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-1;
+  animation-duration: 58s;
+  animation-delay: -14s;
+}
+
+.lava-bg__blob--16 {
+  width: 195px;
+  height: 195px;
+  right: 7%;
+  top: 2535px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-2;
+  animation-duration: 67s;
+  animation-delay: -28s;
+}
+
+.lava-bg__blob--17 {
+  width: 255px;
+  height: 255px;
+  left: 2%;
+  top: 2690px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-3;
+  animation-duration: 76s;
+  animation-delay: -45s;
+}
+
+.lava-bg__blob--18 {
+  width: 205px;
+  height: 205px;
+  right: 11%;
+  top: 2845px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-4;
+  animation-duration: 53s;
+  animation-delay: -36s;
+}
+
+.lava-bg__blob--19 {
+  width: 295px;
+  height: 295px;
+  left: 16%;
+  top: 3000px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-5;
+  animation-duration: 64s;
+  animation-delay: -23s;
+}
+
+.lava-bg__blob--20 {
+  width: 185px;
+  height: 185px;
+  right: 7%;
+  top: 3155px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-6;
+  animation-duration: 71s;
+  animation-delay: -54s;
+}
+
+.lava-bg__blob--21 {
+  width: 235px;
+  height: 235px;
+  left: 2%;
+  top: 3310px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-7;
+  animation-duration: 61s;
+  animation-delay: -32s;
+}
+
+.lava-bg__blob--22 {
+  width: 175px;
+  height: 175px;
+  right: 11%;
+  top: 3465px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-1;
+  animation-duration: 61s;
+  animation-delay: -21s;
+}
+
+.lava-bg__blob--23 {
+  width: 215px;
+  height: 215px;
+  left: 16%;
+  top: 3620px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-2;
+  animation-duration: 70s;
+  animation-delay: -35s;
+}
+
+.lava-bg__blob--24 {
+  width: 265px;
+  height: 265px;
+  right: 7%;
+  top: 3775px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-3;
+  animation-duration: 79s;
+  animation-delay: -52s;
+}
+
+.lava-bg__blob--25 {
+  width: 195px;
+  height: 195px;
+  left: 2%;
+  top: 3930px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-4;
+  animation-duration: 56s;
+  animation-delay: -43s;
+}
+
+.lava-bg__blob--26 {
+  width: 275px;
+  height: 275px;
+  right: 11%;
+  top: 4085px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-5;
+  animation-duration: 67s;
+  animation-delay: -30s;
+}
+
+@keyframes lava-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(120px, -90px) scale(1.2) rotate(20deg); }
+  50% { transform: translate(60px, 60px) scale(0.9) rotate(-15deg); }
+  75% { transform: translate(-70px, 30px) scale(1.05) rotate(10deg); }
+}
+
+@keyframes lava-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  30% { transform: translate(-100px, 110px) scale(0.85) rotate(-25deg); }
+  60% { transform: translate(90px, 70px) scale(1.15) rotate(15deg); }
+  85% { transform: translate(50px, -60px) scale(0.95) rotate(-10deg); }
+}
+
+@keyframes lava-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  35% { transform: translate(-130px, 100px) scale(1.1) rotate(18deg); }
+  65% { transform: translate(-160px, -40px) scale(0.9) rotate(-20deg); }
+}
+
+@keyframes lava-drift-4 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  40% { transform: translate(-110px, -90px) scale(1.25) rotate(-18deg); }
+  75% { transform: translate(60px, -40px) scale(0.9) rotate(12deg); }
+}
+
+@keyframes lava-drift-5 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  30% { transform: translate(90px, 90px) scale(0.9) rotate(15deg); }
+  65% { transform: translate(-80px, -100px) scale(1.15) rotate(-20deg); }
+}
+
+@keyframes lava-drift-6 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  45% { transform: translate(100px, 130px) scale(1.1) rotate(22deg); }
+  80% { transform: translate(140px, 20px) scale(0.95) rotate(-8deg); }
+}
+
+@keyframes lava-drift-7 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  35% { transform: translate(-90px, -110px) scale(1.15) rotate(-16deg); }
+  70% { transform: translate(70px, -50px) scale(0.9) rotate(20deg); }
+}
+
+.lava-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-line-strong);
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.lava-toggle:hover {
+  border-color: var(--color-orange);
+  color: var(--color-orange-dark);
+  transform: translateY(-1px);
+}
+
+.lava-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.site-header .lava-toggle {
+  color: var(--color-header-text);
+}
+
+.site-header .lava-toggle:hover {
+  border-color: var(--color-header-hover);
+  color: var(--color-header-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lava-bg__blob {
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Experience                                                        */
+/* ---------------------------------------------------------------- */
+.experience {
+  position: relative;
+}
+
+.experience__roles {
+  display: grid;
+  gap: 3.5rem;
+}
+
+.experience__role-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: 1.75rem;
+  margin-bottom: 2.25rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.experience__role-header h3 {
+  font-size: 1.4rem;
+}
+
+.experience__company {
+  color: var(--color-orange-dark);
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
+.experience__meta {
+  text-align: right;
+  color: var(--color-ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.experience__summary {
+  max-width: 62ch;
+  font-size: 1.05rem;
+  color: var(--color-ink-soft);
+  margin-bottom: 1.75rem;
+}
+
+.experience__highlights {
+  display: grid;
+  gap: 0.85rem;
+  max-width: 68ch;
+}
+
+.experience__highlights li {
+  position: relative;
+  padding-left: 1.2rem;
+  font-size: 0.98rem;
+  color: var(--color-ink-soft);
+}
+
+.experience__highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-teal);
+}
+
+/* ---------------------------------------------------------------- */
+/* Leadership                                                        */
+/* ---------------------------------------------------------------- */
+.leadership {
+  position: relative;
+  background-color: var(--color-bg-alt);
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.leadership__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.leadership-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-left: 3px solid var(--color-teal);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+}
+
+.leadership-card__period {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-orange-dark);
+  margin-bottom: 0.6rem;
+}
+
+.leadership-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+
+.leadership-card p:last-child {
+  color: var(--color-ink-soft);
+  font-size: 0.95rem;
+}
+
+/* ---------------------------------------------------------------- */
+/* Skills                                                             */
+/* ---------------------------------------------------------------- */
+.skills {
+  position: relative;
+}
+
+.skills__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2.25rem;
+}
+
+.skills__group h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--color-teal-dark);
+  margin-bottom: 1rem;
+}
+
+.skills__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.skills__chips li {
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: 999px;
+  padding: 0.4rem 0.95rem;
+  font-size: 0.86rem;
+  color: var(--color-ink);
+}
+
+.skills__group:nth-child(3n + 1) .skills__chips li {
+  border-color: var(--color-orange);
+}
+
+.skills__group:nth-child(3n + 2) .skills__chips li {
+  border-color: var(--color-teal);
+}
+
+.skills__group:nth-child(3n + 3) .skills__chips li {
+  border-color: var(--color-mustard);
+}
+
+/* ---------------------------------------------------------------- */
+/* Education                                                          */
+/* ---------------------------------------------------------------- */
+.education {
+  position: relative;
+  background-color: var(--color-bg-alt);
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.education__list {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.education__card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 2rem;
+}
+
+.education__card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.education__card p {
+  color: var(--color-ink-soft);
+}
+
+/* ---------------------------------------------------------------- */
+/* Hobbies                                                            */
+/* ---------------------------------------------------------------- */
+.hobbies {
+  position: relative;
+}
+
+.hobbies__layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.hobbies__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.hobbies__chips li {
+  border: 1.5px solid var(--color-line-strong);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.92rem;
+  color: var(--color-ink);
+}
+
+.hobbies__chips li:nth-child(5n + 1) {
+  border-color: var(--color-orange);
+}
+
+.hobbies__chips li:nth-child(5n + 2) {
+  border-color: var(--color-teal);
+}
+
+.hobbies__chips li:nth-child(5n + 3) {
+  border-color: var(--color-mustard);
+}
+
+.hobbies__chips li:nth-child(5n + 4) {
+  border-color: var(--color-teal-dark);
+}
+
+.hobbies__chips li:nth-child(5n + 5) {
+  border-color: var(--color-orange-dark);
+}
+
+.carousel {
+  max-width: 420px;
+  width: 100%;
+}
+
+@media (min-width: 860px) {
+  .hobbies__layout {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .hobbies__chips {
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    padding-top: 0.5rem;
+  }
+
+  .carousel {
+    flex-shrink: 0;
+  }
+}
+
+.carousel__viewport {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-line);
+}
+
+.carousel__track {
+  display: flex;
+  transition: transform 0.35s ease;
+}
+
+.carousel__slide {
+  flex: 0 0 100%;
+  margin: 0;
+}
+
+.carousel__img,
+.carousel__placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.carousel__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg-alt);
+  color: var(--color-surface);
+}
+
+.carousel__slide:nth-child(5n + 1) .carousel__placeholder {
+  background-color: var(--color-orange);
+}
+
+.carousel__slide:nth-child(5n + 2) .carousel__placeholder {
+  background-color: var(--color-mustard);
+}
+
+.carousel__slide:nth-child(5n + 3) .carousel__placeholder {
+  background-color: var(--color-orange-dark);
+}
+
+.carousel__slide:nth-child(5n + 4) .carousel__placeholder {
+  background-color: var(--color-teal);
+}
+
+.carousel__slide:nth-child(5n + 5) .carousel__placeholder {
+  background-color: var(--color-orange);
+}
+
+.carousel__placeholder-icon {
+  width: 30%;
+  height: 30%;
+}
+
+.carousel__slide figcaption {
+  padding: 0.75rem 0.25rem 0;
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+.carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.85rem;
+}
+
+.carousel__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-line-strong);
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.carousel__arrow:hover {
+  border-color: var(--color-orange);
+  color: var(--color-orange-dark);
+}
+
+.carousel__arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+.carousel__dots {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.carousel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background-color: var(--color-line-strong);
+  cursor: pointer;
+}
+
+.carousel__dot.is-active {
+  background-color: var(--color-orange);
+}
+
+/* ---------------------------------------------------------------- */
+/* Footer                                                             */
+/* ---------------------------------------------------------------- */
+.site-footer {
+  background-color: var(--color-footer-bg);
+  color: var(--color-footer-text);
+  padding: 3rem 0 2rem;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-footer-line);
+}
+
+.site-footer__name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+.site-footer__title {
+  color: var(--color-footer-muted);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.site-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+}
+
+.site-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--color-mustard);
+}
+
+.site-footer__link:hover {
+  color: var(--color-footer-text);
+}
+
+.site-footer__link-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.site-footer__copyright {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 1.75rem;
+  font-size: 0.8rem;
+  color: var(--color-footer-muted);
+}
+
+/* ---------------------------------------------------------------- */
+/* Back to top                                                        */
+/* ---------------------------------------------------------------- */
+.back-to-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-teal);
+  color: #faf3e7;
+  box-shadow: 0 4px 14px rgba(60, 42, 33, 0.22);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease,
+    background-color 0.15s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background-color: var(--color-teal-dark);
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Inset sections (INSET_SECTIONS flag)                               */
+/* ---------------------------------------------------------------- */
+/* Each section normally paints a full-bleed band. With the flag on,
+   the band becomes a centred panel instead and the page background is
+   left exposed down both sides - which is where the lava blobs show,
+   since they still span the full width behind the panel. Text ends up
+   on a solid panel rather than over the blobs, so it also reads
+   better. Header and footer are untouched and stay full width. */
+.hero,
+.experience,
+.skills,
+.hobbies {
+  --section-panel-bg: var(--color-bg);
+}
+
+.leadership,
+.education {
+  --section-panel-bg: var(--color-bg-alt);
+}
+
+.hero {
+  --section-panel-bg: var(--color-bg-alt);
+}
+
+@media (min-width: 900px) {
+  :root[data-inset-sections] .section,
+  :root[data-inset-sections] .hero {
+    background-color: transparent;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  :root[data-inset-sections] .section > .section__inner,
+  :root[data-inset-sections] .hero > .hero__inner {
+    background-color: var(--section-panel-bg);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    padding: var(--section-padding) clamp(2rem, 4vw, 3.25rem);
+  }
+
+  /* Already vertically centred by the hero's flex context, so it only
+     needs the panel's own breathing room here. */
+  :root[data-inset-sections] .hero {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Responsive                                                         */
+/* ---------------------------------------------------------------- */
+@media (max-width: 760px) {
+  /* The blobs are sized for desktop section proportions and overwhelm
+     the stacked mobile layout, so the effect - and its toggle - are
+     desktop-only. */
+  .lava-bg {
+    display: none;
+  }
+
+  .site-header .lava-toggle {
+    display: none;
+  }
+
+  .site-header__nav--desktop {
+    display: none;
+  }
+
+  .site-header__toggle {
+    display: flex;
+  }
+
+  .site-header__nav--mobile {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 0 1.75rem;
+    gap: 0.25rem;
+    max-height: 0;
+    overflow: hidden;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    border-bottom: 1px solid transparent;
+    transition: max-height 0.25s ease, padding 0.25s ease;
+  }
+
+  .site-header__nav--mobile.is-open {
+    max-height: 320px;
+    padding: 0.5rem 1.75rem 1.5rem;
+    border-bottom-color: var(--color-line);
+  }
+
+  .site-header__nav--mobile a {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 1.75rem;
+  }
+
+  .experience__meta {
+    text-align: left;
+  }
+
+  .site-footer__inner {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
