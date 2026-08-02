@@ -1,12 +1,10 @@
 import { hobbies, gallery } from '../data/cv.js'
 import { Dot } from './Shapes.jsx'
 import Carousel from './Carousel.jsx'
-import LavaBackground from './LavaBackground.jsx'
 
-function Hobbies({ lavaRunning }) {
+function Hobbies() {
   return (
     <section id="hobbies" className="section hobbies">
-      <LavaBackground running={lavaRunning} />
       <div className="section__inner">
         <h2 className="section__heading">
           <Dot className="section__heading-dot" />

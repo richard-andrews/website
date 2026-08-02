@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { profile, stats } from '../data/cv.js'
-import { Sunburst } from './Shapes.jsx'
 
 // To add your photo: drop an image at `public/profile.jpg` (any image
 // works as long as it's named profile.jpg - or update the src below to
@@ -11,7 +10,6 @@ function Portrait() {
 
   return (
     <div className="hero__portrait">
-      <Sunburst className="hero__portrait-burst" />
       <div className="hero__portrait-frame">
         {!failed ? (
           <img
@@ -50,7 +48,7 @@ function Hero() {
 
             <div className="hero__actions">
               <a className="button button--ghost" href="#experience">
-                View experience
+                Learn more
               </a>
               <a className="button button--primary" href={`mailto:${profile.email}`}>
                 Get in touch

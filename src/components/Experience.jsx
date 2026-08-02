@@ -1,11 +1,9 @@
 import { experience } from '../data/cv.js'
 import { Dot } from './Shapes.jsx'
-import LavaBackground from './LavaBackground.jsx'
 
-function Experience({ lavaRunning }) {
+function Experience() {
   return (
     <section id="experience" className="section experience">
-      <LavaBackground running={lavaRunning} />
       <div className="section__inner">
         <h2 className="section__heading">
           <Dot className="section__heading-dot" />

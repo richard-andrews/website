@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import Experience from './components/Experience.jsx'
@@ -6,9 +7,11 @@ import Skills from './components/Skills.jsx'
 import Education from './components/Education.jsx'
 import Hobbies from './components/Hobbies.jsx'
 import Footer from './components/Footer.jsx'
-import { LavaGooDefs } from './components/LavaBackground.jsx'
+import BackToTop from './components/BackToTop.jsx'
+import LavaBackground, { LavaGooDefs } from './components/LavaBackground.jsx'
 import { useTheme } from './hooks/useTheme.js'
 import { useLavaMotion } from './hooks/useLavaMotion.js'
+import { INSET_SECTIONS } from './config.js'
 
 const sections = [
   { id: 'experience', label: 'Experience' },
@@ -22,6 +25,12 @@ function App() {
   const { theme, toggleTheme } = useTheme()
   const { running: lavaRunning, toggle: toggleLava } = useLavaMotion()
 
+  // Exposed as a root attribute so the layout switch lives entirely in
+  // CSS rather than being threaded through every section component.
+  useEffect(() => {
+    document.documentElement.toggleAttribute('data-inset-sections', INSET_SECTIONS)
+  }, [])
+
   return (
     <>
       <LavaGooDefs />
@@ -32,15 +41,23 @@ function App() {
         lavaRunning={lavaRunning}
         onToggleLava={toggleLava}
       />
-      <main>
+      <main className="main">
+        {/* One background spanning every section, rather than a
+            separate instance per section - so blobs can drift across
+            a section boundary instead of being clipped at its edge.
+            Each section's own background (opaque outside inset mode
+            for Hero/Leadership/Education, transparent everywhere in
+            inset mode) decides where it actually shows through. */}
+        <LavaBackground running={lavaRunning} />
         <Hero />
-        <Experience lavaRunning={lavaRunning} />
+        <Experience />
         <Leadership />
-        <Skills lavaRunning={lavaRunning} />
+        <Skills />
         <Education />
-        <Hobbies lavaRunning={lavaRunning} />
+        <Hobbies />
       </main>
       <Footer />
+      <BackToTop />
     </>
   )
 }

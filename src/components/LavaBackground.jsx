@@ -23,12 +23,15 @@ export function LavaGooDefs() {
   )
 }
 
-const BLOB_COUNT = 7
+const BLOB_COUNT = 400
 
-// A decorative, contained background: a handful of blurred, irregular
-// (kidney-bean-ish) blobs merged with an SVG goo filter so they melt
-// into one another as they drift, like the wax in a lava lamp. Motion
-// is mostly the slow CSS loop below (large, graceful, unhurried) - the
+// A single decorative background shared by the whole page (mounted
+// once in App.jsx, behind every section) rather than one instance per
+// section - so a blob can drift across a section boundary instead of
+// being clipped at its edge. Blurred, irregular (kidney-bean-ish)
+// blobs are merged with an SVG goo filter so they melt into one
+// another as they drift, like the wax in a lava lamp. Motion is
+// mostly the slow CSS loop below (large, graceful, unhurried) - the
 // JS layer on top adds only a whisper of imperfection, plus a "drag"
 // against scroll: the blobs lag behind rather than tracking it exactly,
 // like they have their own weight, then ease back once scrolling stops.

@@ -6,7 +6,7 @@
   --color-bg-alt: #f1e6d3;
   --color-surface: #fffdf8;
   --color-ink: #3c2a21;
-  --color-ink-soft: #6b5a4d;
+  --color-ink-soft: #57473b;
   --color-orange: #b54b1c;
   --color-orange-dark: #8f3b16;
   --color-teal: #3f7c6b;
@@ -37,7 +37,9 @@
   --container-width: 1080px;
   --radius-sm: 4px;
   --radius-md: 10px;
+  --radius-lg: 22px;
   --section-padding: clamp(3.5rem, 6vw, 6rem);
+  --header-height: 68px;
 
   color-scheme: light;
 }
@@ -47,7 +49,7 @@
   --color-bg-alt: #2a1e16;
   --color-surface: #2c2018;
   --color-ink: #f3e9db;
-  --color-ink-soft: #cbb9a8;
+  --color-ink-soft: #d8c8b8;
   --color-orange: #e08b42;
   --color-orange-dark: #f2a662;
   --color-teal: #5fa593;
@@ -84,6 +86,9 @@ body {
   color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 17px;
+  /* Jost runs light at 400, which struggles against the dot texture and
+     the lava blobs - 500 is the readable baseline here. */
+  font-weight: 500;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -149,7 +154,7 @@ svg {
 .section__heading-dot {
   width: 10px;
   height: 10px;
-  color: var(--color-orange);
+  color: var(--color-teal);
   flex-shrink: 0;
 }
 
@@ -191,7 +196,8 @@ svg {
 }
 
 .button--ghost:hover {
-  border-color: var(--color-ink);
+  border-color: var(--color-teal);
+  color: var(--color-teal-dark);
   transform: translateY(-1px);
 }
 
@@ -216,9 +222,14 @@ svg {
 
 .site-header__mark {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.9vw, 1.45rem);
+  letter-spacing: -0.01em;
+  transition: color 0.15s ease;
+}
+
+.site-header__mark:hover {
+  color: var(--color-header-hover);
 }
 
 .site-header__nav--desktop {
@@ -315,6 +326,7 @@ svg {
 .hero__inner {
   position: relative;
   z-index: 1;
+  width: 100%;
   max-width: var(--container-width);
   margin: 0 auto;
   padding: 0 1.75rem;
@@ -349,13 +361,17 @@ svg {
 .hero__portrait-frame {
   position: relative;
   z-index: 1;
-  width: clamp(180px, 22vw, 260px);
-  height: clamp(180px, 22vw, 260px);
+  /* vw-based so it actually tracks the viewport on phones too - the
+     old floor sat above what 22vw ever reached at mobile widths, so it
+     was effectively a fixed size all the way down to the smallest
+     screens. */
+  width: clamp(150px, 42vw, 260px);
+  height: clamp(150px, 42vw, 260px);
   border-radius: 50%;
   overflow: hidden;
   background-color: var(--color-surface);
-  border: 6px solid var(--color-bg);
-  box-shadow: 0 0 0 2px var(--color-line-strong);
+  border: 6px solid var(--color-bg-alt);
+  box-shadow: 0 0 0 2px var(--color-teal);
 }
 
 .hero__portrait-img {
@@ -430,6 +446,14 @@ svg {
 }
 
 @media (min-width: 860px) {
+  /* Fills the viewport below the sticky header, with the content
+     vertically centred in whatever space that leaves. */
+  .hero {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - var(--header-height));
+  }
+
   /* On mobile the portrait sits between the title and tagline in normal
      document flow. On wider screens it moves beside the full text
      column instead, spanning both text blocks via named grid areas. */
@@ -463,14 +487,22 @@ svg {
   }
 }
 
-/* Lava-lamp background: a handful of blurred, kidney-bean-shaped blobs
-   merged with an SVG goo filter so they melt into one another as they
-   drift, like the wax in a lava lamp. Contained to whichever section
-   renders it, paused by default, started with the button in the
-   header. Kept faint (low opacity) so it stays an ambient wash rather
-   than competing with text for contrast. Motion is deliberately slow
-   and large - a graceful drift rather than a jitter - with a small
-   drag effect against scroll so the blobs feel like they have weight. */
+/* Lava-lamp background: blurred, kidney-bean-shaped blobs merged with
+   an SVG goo filter so they melt into one another as they drift, like
+   the wax in a lava lamp. One instance spans the whole page (see
+   `.main`, below) rather than being clipped to a single section, so a
+   blob can drift across a section boundary instead of stopping dead
+   at its edge - it only becomes visible wherever a section's own
+   background lets it show through. Runs by default, paused with the
+   button in the header. Kept faint (low opacity) so it stays an
+   ambient wash rather than competing with text for contrast. Motion
+   is deliberately slow and large - a graceful drift rather than a
+   jitter - with a small drag effect against scroll so the blobs feel
+   like they have weight. */
+.main {
+  position: relative;
+}
+
 .lava-bg {
   position: absolute;
   inset: 0;
@@ -481,7 +513,12 @@ svg {
 
 .lava-bg__blobs {
   position: absolute;
-  inset: -20%;
+  /* A fixed margin rather than a percentage - percentage insets scale
+     with the shared canvas's full height, which would otherwise pull
+     the blobs' coordinate origin hundreds of pixels off from the top
+     of `.lava-bg` now that this spans the whole page instead of one
+     section. */
+  inset: -180px;
   /* The goo filter needs full-strength alpha to compute its merge
      threshold correctly - fading the blobs themselves (rather than
      this filtered container) washes everything out to nothing. Opacity
@@ -514,7 +551,13 @@ svg {
    ellipse, so they read as organic rather than lumpy circles. */
 .lava-bg__blob--1,
 .lava-bg__blob--4,
-.lava-bg__blob--7 {
+.lava-bg__blob--7,
+.lava-bg__blob--10,
+.lava-bg__blob--13,
+.lava-bg__blob--16,
+.lava-bg__blob--19,
+.lava-bg__blob--22,
+.lava-bg__blob--25 {
   clip-path: polygon(
     95.6% 50%, 85.3% 70.4%, 59.6% 66.6%, 50% 66.8%, 38% 70.8%, 16.7% 69.2%,
     4.4% 50%, 12.6% 28.4%, 32% 18.8%, 50% 9.2%, 72.8% 10.5%, 89% 28.4%
@@ -522,7 +565,14 @@ svg {
 }
 
 .lava-bg__blob--2,
-.lava-bg__blob--5 {
+.lava-bg__blob--5,
+.lava-bg__blob--8,
+.lava-bg__blob--11,
+.lava-bg__blob--14,
+.lava-bg__blob--17,
+.lava-bg__blob--20,
+.lava-bg__blob--23,
+.lava-bg__blob--26 {
   clip-path: polygon(
     74% 50%, 83.3% 69.2%, 72.8% 89.5%, 50% 93.2%, 32% 81.2%, 14.7% 70.4%,
     4.4% 50%, 12.6% 28.4%, 27.2% 10.5%, 50% 9.2%, 59.6% 33.4%, 64.5% 41.6%
@@ -530,18 +580,33 @@ svg {
 }
 
 .lava-bg__blob--3,
-.lava-bg__blob--6 {
+.lava-bg__blob--6,
+.lava-bg__blob--9,
+.lava-bg__blob--12,
+.lava-bg__blob--15,
+.lava-bg__blob--18,
+.lava-bg__blob--21,
+.lava-bg__blob--24 {
   clip-path: polygon(
     86% 50%, 85.3% 70.4%, 72.8% 89.5%, 50% 93.2%, 27.2% 89.5%, 14.7% 70.4%,
     30.8% 50%, 35.5% 41.6%, 38% 29.2%, 50% 11.6%, 72.8% 10.5%, 87.4% 28.4%
   );
 }
 
+/* Positioned in px down the shared canvas (rather than %) so the
+   spread stays even regardless of how tall the page ends up being -
+   percentages would bunch or thin out as content is added or removed. */
+/* Positioned in px down the shared canvas (rather than %) so the
+
+   spread stays even regardless of how tall the page ends up being -
+
+   percentages would bunch or thin out as content is added or removed. */
+
 .lava-bg__blob--1 {
   width: 240px;
   height: 240px;
-  left: 4%;
-  top: 55%;
+  left: 2%;
+  top: 210px;
   background-color: var(--color-orange);
   animation-name: lava-drift-1;
   animation-duration: 52s;
@@ -550,8 +615,8 @@ svg {
 .lava-bg__blob--2 {
   width: 190px;
   height: 190px;
-  left: 22%;
-  top: 15%;
+  right: 11%;
+  top: 365px;
   background-color: var(--color-mustard);
   animation-name: lava-drift-2;
   animation-duration: 61s;
@@ -561,8 +626,8 @@ svg {
 .lava-bg__blob--3 {
   width: 280px;
   height: 280px;
-  right: 4%;
-  top: 8%;
+  left: 16%;
+  top: 520px;
   background-color: var(--color-orange-dark);
   animation-name: lava-drift-3;
   animation-duration: 70s;
@@ -572,9 +637,9 @@ svg {
 .lava-bg__blob--4 {
   width: 170px;
   height: 170px;
-  right: 18%;
-  bottom: 6%;
-  background-color: var(--color-mustard);
+  right: 7%;
+  top: 675px;
+  background-color: var(--color-orange);
   animation-name: lava-drift-4;
   animation-duration: 47s;
   animation-delay: -22s;
@@ -583,9 +648,9 @@ svg {
 .lava-bg__blob--5 {
   width: 220px;
   height: 220px;
-  left: 38%;
-  top: 42%;
-  background-color: var(--color-orange);
+  left: 2%;
+  top: 830px;
+  background-color: var(--color-mustard);
   animation-name: lava-drift-5;
   animation-duration: 58s;
   animation-delay: -9s;
@@ -594,8 +659,8 @@ svg {
 .lava-bg__blob--6 {
   width: 160px;
   height: 160px;
-  left: 8%;
-  top: 12%;
+  right: 11%;
+  top: 985px;
   background-color: var(--color-orange-dark);
   animation-name: lava-drift-6;
   animation-duration: 65s;
@@ -605,12 +670,221 @@ svg {
 .lava-bg__blob--7 {
   width: 200px;
   height: 200px;
-  right: 30%;
-  bottom: 30%;
-  background-color: var(--color-mustard);
+  left: 16%;
+  top: 1140px;
+  background-color: var(--color-orange);
   animation-name: lava-drift-7;
   animation-duration: 55s;
   animation-delay: -18s;
+}
+
+.lava-bg__blob--8 {
+  width: 250px;
+  height: 250px;
+  right: 7%;
+  top: 1295px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-1;
+  animation-duration: 55s;
+  animation-delay: -7s;
+}
+
+.lava-bg__blob--9 {
+  width: 180px;
+  height: 180px;
+  left: 2%;
+  top: 1450px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-2;
+  animation-duration: 64s;
+  animation-delay: -21s;
+}
+
+.lava-bg__blob--10 {
+  width: 260px;
+  height: 260px;
+  right: 11%;
+  top: 1605px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-3;
+  animation-duration: 73s;
+  animation-delay: -38s;
+}
+
+.lava-bg__blob--11 {
+  width: 175px;
+  height: 175px;
+  left: 16%;
+  top: 1760px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-4;
+  animation-duration: 50s;
+  animation-delay: -29s;
+}
+
+.lava-bg__blob--12 {
+  width: 230px;
+  height: 230px;
+  right: 7%;
+  top: 1915px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-5;
+  animation-duration: 61s;
+  animation-delay: -16s;
+}
+
+.lava-bg__blob--13 {
+  width: 165px;
+  height: 165px;
+  left: 2%;
+  top: 2070px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-6;
+  animation-duration: 68s;
+  animation-delay: -47s;
+}
+
+.lava-bg__blob--14 {
+  width: 210px;
+  height: 210px;
+  right: 11%;
+  top: 2225px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-7;
+  animation-duration: 58s;
+  animation-delay: -25s;
+}
+
+.lava-bg__blob--15 {
+  width: 245px;
+  height: 245px;
+  left: 16%;
+  top: 2380px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-1;
+  animation-duration: 58s;
+  animation-delay: -14s;
+}
+
+.lava-bg__blob--16 {
+  width: 195px;
+  height: 195px;
+  right: 7%;
+  top: 2535px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-2;
+  animation-duration: 67s;
+  animation-delay: -28s;
+}
+
+.lava-bg__blob--17 {
+  width: 255px;
+  height: 255px;
+  left: 2%;
+  top: 2690px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-3;
+  animation-duration: 76s;
+  animation-delay: -45s;
+}
+
+.lava-bg__blob--18 {
+  width: 205px;
+  height: 205px;
+  right: 11%;
+  top: 2845px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-4;
+  animation-duration: 53s;
+  animation-delay: -36s;
+}
+
+.lava-bg__blob--19 {
+  width: 295px;
+  height: 295px;
+  left: 16%;
+  top: 3000px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-5;
+  animation-duration: 64s;
+  animation-delay: -23s;
+}
+
+.lava-bg__blob--20 {
+  width: 185px;
+  height: 185px;
+  right: 7%;
+  top: 3155px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-6;
+  animation-duration: 71s;
+  animation-delay: -54s;
+}
+
+.lava-bg__blob--21 {
+  width: 235px;
+  height: 235px;
+  left: 2%;
+  top: 3310px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-7;
+  animation-duration: 61s;
+  animation-delay: -32s;
+}
+
+.lava-bg__blob--22 {
+  width: 175px;
+  height: 175px;
+  right: 11%;
+  top: 3465px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-1;
+  animation-duration: 61s;
+  animation-delay: -21s;
+}
+
+.lava-bg__blob--23 {
+  width: 215px;
+  height: 215px;
+  left: 16%;
+  top: 3620px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-2;
+  animation-duration: 70s;
+  animation-delay: -35s;
+}
+
+.lava-bg__blob--24 {
+  width: 265px;
+  height: 265px;
+  right: 7%;
+  top: 3775px;
+  background-color: var(--color-orange-dark);
+  animation-name: lava-drift-3;
+  animation-duration: 79s;
+  animation-delay: -52s;
+}
+
+.lava-bg__blob--25 {
+  width: 195px;
+  height: 195px;
+  left: 2%;
+  top: 3930px;
+  background-color: var(--color-orange);
+  animation-name: lava-drift-4;
+  animation-duration: 56s;
+  animation-delay: -43s;
+}
+
+.lava-bg__blob--26 {
+  width: 275px;
+  height: 275px;
+  right: 11%;
+  top: 4085px;
+  background-color: var(--color-mustard);
+  animation-name: lava-drift-5;
+  animation-duration: 67s;
+  animation-delay: -30s;
 }
 
 @keyframes lava-drift-1 {
@@ -703,12 +977,6 @@ svg {
 /* ---------------------------------------------------------------- */
 .experience {
   position: relative;
-  overflow: hidden;
-}
-
-.experience .section__inner {
-  position: relative;
-  z-index: 1;
 }
 
 .experience__roles {
@@ -773,13 +1041,14 @@ svg {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--color-orange);
+  background-color: var(--color-teal);
 }
 
 /* ---------------------------------------------------------------- */
 /* Leadership                                                        */
 /* ---------------------------------------------------------------- */
 .leadership {
+  position: relative;
   background-color: var(--color-bg-alt);
   border-top: 1px solid var(--color-line);
   border-bottom: 1px solid var(--color-line);
@@ -794,6 +1063,7 @@ svg {
 .leadership-card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-line);
+  border-left: 3px solid var(--color-teal);
   border-radius: var(--radius-md);
   padding: 1.75rem;
 }
@@ -822,23 +1092,6 @@ svg {
 /* ---------------------------------------------------------------- */
 .skills {
   position: relative;
-  overflow: hidden;
-}
-
-.skills__boomerang {
-  position: absolute;
-  top: -10%;
-  right: -4%;
-  width: 240px;
-  color: var(--color-orange);
-  opacity: 0.07;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.skills .section__inner {
-  position: relative;
-  z-index: 1;
 }
 
 .skills__grid {
@@ -887,6 +1140,7 @@ svg {
 /* Education                                                          */
 /* ---------------------------------------------------------------- */
 .education {
+  position: relative;
   background-color: var(--color-bg-alt);
   border-top: 1px solid var(--color-line);
   border-bottom: 1px solid var(--color-line);
@@ -923,12 +1177,6 @@ svg {
 /* ---------------------------------------------------------------- */
 .hobbies {
   position: relative;
-  overflow: hidden;
-}
-
-.hobbies .section__inner {
-  position: relative;
-  z-index: 1;
 }
 
 .hobbies__layout {
@@ -1172,6 +1420,96 @@ svg {
   padding: 0 1.75rem;
   font-size: 0.8rem;
   color: var(--color-footer-muted);
+}
+
+/* ---------------------------------------------------------------- */
+/* Back to top                                                        */
+/* ---------------------------------------------------------------- */
+.back-to-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-teal);
+  color: #faf3e7;
+  box-shadow: 0 4px 14px rgba(60, 42, 33, 0.22);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease,
+    background-color 0.15s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background-color: var(--color-teal-dark);
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Inset sections (INSET_SECTIONS flag)                               */
+/* ---------------------------------------------------------------- */
+/* Each section normally paints a full-bleed band. With the flag on,
+   the band becomes a centred panel instead and the page background is
+   left exposed down both sides - which is where the lava blobs show,
+   since they still span the full width behind the panel. Text ends up
+   on a solid panel rather than over the blobs, so it also reads
+   better. Header and footer are untouched and stay full width. */
+.hero,
+.experience,
+.skills,
+.hobbies {
+  --section-panel-bg: var(--color-bg);
+}
+
+.leadership,
+.education {
+  --section-panel-bg: var(--color-bg-alt);
+}
+
+.hero {
+  --section-panel-bg: var(--color-bg-alt);
+}
+
+@media (min-width: 900px) {
+  :root[data-inset-sections] .section,
+  :root[data-inset-sections] .hero {
+    background-color: transparent;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  :root[data-inset-sections] .section > .section__inner,
+  :root[data-inset-sections] .hero > .hero__inner {
+    background-color: var(--section-panel-bg);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    padding: var(--section-padding) clamp(2rem, 4vw, 3.25rem);
+  }
+
+  /* Already vertically centred by the hero's flex context, so it only
+     needs the panel's own breathing room here. */
+  :root[data-inset-sections] .hero {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
 }
 
 /* ---------------------------------------------------------------- */

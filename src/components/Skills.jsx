@@ -1,12 +1,9 @@
 import { skills } from '../data/cv.js'
-import { Dot, Boomerang } from './Shapes.jsx'
-import LavaBackground from './LavaBackground.jsx'
+import { Dot } from './Shapes.jsx'
 
-function Skills({ lavaRunning }) {
+function Skills() {
   return (
     <section id="skills" className="section skills">
-      <Boomerang className="skills__boomerang" />
-      <LavaBackground running={lavaRunning} />
       <div className="section__inner">
         <h2 className="section__heading">
           <Dot className="section__heading-dot" />
